@@ -9,6 +9,56 @@ function showScreen(screenName) {
   document.getElementById('screen-' + screenName).classList.add('active');
 }
 
+/* ──────────────────────────────────────────────
+   TAB NAVIGATION
+   ────────────────────────────────────────────── */
+
+/** Switch ke tab tertentu */
+function switchTab(tabName) {
+  // Update tab buttons
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    const isActive = btn.dataset.tab === tabName;
+    btn.classList.toggle('active', isActive);
+    btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+
+  // Update tab content
+  document.querySelectorAll('.tab-content').forEach(content => {
+    content.classList.remove('active');
+  });
+  const targetPanel = document.getElementById('tab-' + tabName);
+  if (targetPanel) {
+    targetPanel.classList.add('active');
+  }
+}
+
+/** Inisialisasi tab event listeners */
+function initTabs() {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+
+    // Keyboard navigation antar tab (arrow keys)
+    btn.addEventListener('keydown', (e) => {
+      const tabs = Array.from(document.querySelectorAll('.tab-btn'));
+      const currentIndex = tabs.indexOf(btn);
+      let nextIndex = -1;
+
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        nextIndex = (currentIndex + 1) % tabs.length;
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+      }
+
+      if (nextIndex >= 0) {
+        tabs[nextIndex].focus();
+        switchTab(tabs[nextIndex].dataset.tab);
+      }
+    });
+  });
+}
+
 /** Update tampilan jumlah kanji terpilih */
 function updateSelectionCount() {
   const countEl = document.getElementById('sel-count');

@@ -23,10 +23,18 @@
 <!-- ═══════════════ SCREEN: SELECT ═══════════════ -->
 <main id="screen-select" class="screen active" role="main" aria-label="Pilih kanji">
 
-  <!-- Rentang Nomor -->
-  <div>
-    <p class="section-title" id="range-label">Rentang nomor</p>
-    <div class="panel" role="group" aria-labelledby="range-label">
+  <!-- Tab Navigation -->
+  <nav class="tab-nav" role="tablist" aria-label="Metode pemilihan kanji">
+    <button class="tab-btn active" id="tab-btn-range" role="tab" aria-selected="true" aria-controls="tab-range" data-tab="range">Rentang</button>
+    <button class="tab-btn" id="tab-btn-core" role="tab" aria-selected="false" aria-controls="tab-core" data-tab="core">Kanji Inti</button>
+    <button class="tab-btn" id="tab-btn-category" role="tab" aria-selected="false" aria-controls="tab-category" data-tab="category">Kategori</button>
+    <button class="tab-btn" id="tab-btn-search" role="tab" aria-selected="false" aria-controls="tab-search" data-tab="search">Cari</button>
+  </nav>
+
+  <!-- Tab Content: Rentang Nomor -->
+  <div class="tab-content active" id="tab-range" role="tabpanel" aria-labelledby="tab-btn-range">
+    <div class="panel" role="group">
+      <p class="section-desc">Pilih kanji berdasarkan rentang nomor urut.</p>
       <div class="range-row">
         <label for="range-from">Dari nomor</label>
         <input type="number" class="num-input" id="range-from" min="1" max="528" value="1" aria-describedby="range-error">
@@ -38,28 +46,27 @@
     </div>
   </div>
 
-  <!-- Pilih berdasarkan Kanji Inti -->
-  <div>
-    <p class="section-title" id="core-label">Pilih berdasarkan Kanji Inti</p>
-    <div class="panel" role="group" aria-labelledby="core-label">
+  <!-- Tab Content: Kanji Inti -->
+  <div class="tab-content" id="tab-core" role="tabpanel" aria-labelledby="tab-btn-core">
+    <div class="panel" role="group">
       <p class="section-desc">Pilih kanji inti, otomatis semua turunannya ikut di-test.</p>
       <div class="core-kanji-grid" id="core-kanji-grid" role="group"></div>
       <div class="core-info" id="core-info" aria-live="polite"></div>
     </div>
   </div>
 
-  <!-- Kategori Tematik -->
-  <div>
-    <p class="section-title" id="cat-label">Kategori tematik</p>
-    <div class="panel" role="group" aria-labelledby="cat-label">
+  <!-- Tab Content: Kategori Tematik -->
+  <div class="tab-content" id="tab-category" role="tabpanel" aria-labelledby="tab-btn-category">
+    <div class="panel" role="group">
+      <p class="section-desc">Pilih berdasarkan tema kategori.</p>
       <div class="chips" id="cat-chips" role="group"></div>
     </div>
   </div>
 
-  <!-- Cari Kanji -->
-  <div>
-    <p class="section-title" id="search-label">Cari kanji spesifik</p>
+  <!-- Tab Content: Cari Kanji -->
+  <div class="tab-content" id="tab-search" role="tabpanel" aria-labelledby="tab-btn-search">
     <div class="panel">
+      <p class="section-desc">Cari dan pilih kanji spesifik.</p>
       <div class="search-wrap">
         <span class="search-icon" aria-hidden="true">&#128269;</span>
         <input type="text" class="search-input" id="search-input" placeholder="Ketik kanji, hiragana, atau arti..." aria-label="Cari kanji" autocomplete="off">
@@ -68,10 +75,10 @@
     </div>
   </div>
 
-  <!-- Mode Kuis -->
-  <div>
-    <p class="section-title" id="mode-label">Mode kuis</p>
-    <div class="panel" role="radiogroup" aria-labelledby="mode-label">
+  <!-- Mode Kuis (selalu terlihat) -->
+  <div class="select-options">
+    <div class="panel" role="radiogroup" aria-label="Mode kuis">
+      <p class="section-title" id="mode-label">Mode kuis</p>
       <div class="mode-group">
         <button class="mode-btn on" id="mode-k2a" role="radio" aria-checked="true" data-mode="k2a">Kanji &rarr; Arti</button>
         <button class="mode-btn" id="mode-a2k" role="radio" aria-checked="false" data-mode="a2k">Arti &rarr; Kanji</button>
@@ -80,10 +87,10 @@
     </div>
   </div>
 
-  <!-- SRS & Data -->
-  <div>
-    <p class="section-title">SRS &amp; Data</p>
-    <div class="panel">
+  <!-- SRS & Data (collapsible) -->
+  <details class="srs-details">
+    <summary class="srs-summary">SRS &amp; Data</summary>
+    <div class="panel srs-panel">
       <div class="data-actions">
         <button class="btn btn-sm" id="srs-toggle-btn">SRS: Aktif</button>
         <button class="btn btn-sm" id="btn-export">Export Progress</button>
@@ -92,14 +99,16 @@
         <button class="btn btn-sm" id="btn-reset">Reset Progress</button>
       </div>
     </div>
-  </div>
+  </details>
 
-  <!-- Footer -->
+  <!-- Sticky Footer -->
   <div class="sel-footer">
-    <button class="btn btn-accent" style="padding:11px 28px;font-size:14px" id="btn-start-quiz" aria-label="Mulai kuis">Mulai kuis &rarr;</button>
-    <button class="btn btn-sm" id="btn-select-all">Pilih semua</button>
-    <button class="btn btn-sm" id="btn-clear-all">Hapus semua</button>
+    <div class="sel-footer-left">
+      <button class="btn btn-sm" id="btn-select-all">Pilih semua</button>
+      <button class="btn btn-sm" id="btn-clear-all">Hapus semua</button>
+    </div>
     <span class="sel-count" id="sel-count" aria-live="polite">Dipilih: <strong>100</strong> kanji</span>
+    <button class="btn btn-accent btn-start" id="btn-start-quiz" aria-label="Mulai kuis">Mulai kuis &rarr;</button>
   </div>
 
 </main>
