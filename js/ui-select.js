@@ -31,8 +31,19 @@ function applyRange() {
   const toEl = document.getElementById('range-to');
   const errorEl = document.getElementById('range-error');
 
-  let fromNum = parseInt(fromEl.value) || 1;
-  let toNum = parseInt(toEl.value) || KANJI_DATA.length;
+  // Cek data tersedia
+  if (!KANJI_DATA || KANJI_DATA.length === 0) {
+    errorEl.textContent = 'Data kanji belum dimuat!';
+    errorEl.classList.add('visible');
+    return;
+  }
+
+  let fromNum = parseInt(fromEl.value);
+  let toNum = parseInt(toEl.value);
+
+  // Fallback jika NaN
+  if (isNaN(fromNum) || fromNum < 1) { fromNum = 1; fromEl.value = 1; }
+  if (isNaN(toNum) || toNum < 1) { toNum = KANJI_DATA.length; toEl.value = KANJI_DATA.length; }
 
   // Reset error
   errorEl.classList.remove('visible');
@@ -186,6 +197,11 @@ function buildCoreKanjiGrid() {
   const gridEl = document.getElementById('core-kanji-grid');
   if (!gridEl) return;
   gridEl.replaceChildren();
+
+  if (!CORE_KANJI_MAP || Object.keys(CORE_KANJI_MAP).length === 0) {
+    gridEl.innerHTML = '<p style="color:#999;font-size:13px;">Tidak ada kanji inti tersedia.</p>';
+    return;
+  }
 
   const coreChars = Object.keys(CORE_KANJI_MAP);
   coreChars.forEach(char => {
