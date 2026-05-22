@@ -54,8 +54,9 @@ function applyRange() {
     return;
   }
 
-  // Clear active categories (rentang = mode filter berbeda)
+  // Clear active categories & core kanji (rentang = mode filter berbeda)
   state.activeCategories.clear();
+  clearCoreKanjiSelection();
 
   // Update seleksi
   state.selectedIds.clear();
@@ -77,6 +78,9 @@ function toggleCategory(category, chipEl) {
     state.activeCategories.add(category.key);
   }
 
+  // Clear core kanji selection (kategori = mode filter berbeda)
+  clearCoreKanjiSelection();
+
   // Rebuild seleksi berdasarkan kategori aktif
   state.selectedIds.clear();
   KANJI_DATA.forEach(card => {
@@ -93,6 +97,7 @@ function toggleCategory(category, chipEl) {
 function selectAll() {
   KANJI_DATA.forEach(card => state.selectedIds.add(card[0]));
   CATEGORIES.forEach(cat => state.activeCategories.add(cat.key));
+  clearCoreKanjiSelection();
   updateCategoryChips();
   updateSelectionCount();
 }
@@ -101,6 +106,7 @@ function selectAll() {
 function clearAll() {
   state.selectedIds.clear();
   state.activeCategories.clear();
+  clearCoreKanjiSelection();
   updateCategoryChips();
   updateSelectionCount();
 }
@@ -169,4 +175,98 @@ function toggleSingleCard(kanjiId, itemEl) {
   }
   updateCategoryChips();
   updateSelectionCount();
+}
+
+/* ──────────────────────────────────────────────
+   CORE KANJI (KANJI INTI) SELECTION
+   ────────────────────────────────────────────── */
+
+/** Build grid of core kanji buttons */
+function buildCoreKanjiGrid() {
+  const gridEl = document.getElementById('core-kanji-grid');
+  if (!gridEl) return;
+  gridEl.replaceChildren();
+
+  const coreChars = Object.keys(CORE_KANJI_MAP);
+  coreChars.forEach(char => {
+    const group = CORE_KANJI_MAP[char];
+    const count = group.derivativeIds.length + 1; // core + derivatives
+
+    const btn = createElement('button', 'core-kanji-btn', char);
+    btn.setAttribute('role', 'checkbox');
+    btn.setAttribute('aria-checked', 'false');
+    btn.setAttribute('aria-label', char + ' (' + group.core[3] + ') — ' + count + ' kanji');
+    btn.setAttribute('title', group.core[3] + ' — ' + count + ' kanji total');
+    btn.dataset.char = char;
+
+    btn.addEventListener('click', () => toggleCoreKanji(char));
+    gridEl.appendChild(btn);
+  });
+}
+
+/** Toggle satu kanji inti (pilih/hapus beserta turunannya) */
+function toggleCoreKanji(char) {
+  if (state.activeCoreKanji.has(char)) {
+    state.activeCoreKanji.delete(char);
+  } else {
+    state.activeCoreKanji.add(char);
+  }
+
+  // Rebuild seleksi berdasarkan kanji inti yang aktif
+  rebuildSelectionFromCoreKanji();
+  updateCoreKanjiGrid();
+  updateCoreKanjiInfo();
+  updateSelectionCount();
+}
+
+/** Rebuild selected IDs berdasarkan kanji inti yang dipilih */
+function rebuildSelectionFromCoreKanji() {
+  // Bersihkan kategori (core kanji = mode filter terpisah)
+  state.activeCategories.clear();
+  updateCategoryChips();
+
+  // Rebuild selected IDs
+  state.selectedIds.clear();
+  const ids = getIdsByCoreKanji(Array.from(state.activeCoreKanji));
+  ids.forEach(id => state.selectedIds.add(id));
+}
+
+/** Update tampilan visual grid kanji inti */
+function updateCoreKanjiGrid() {
+  const buttons = document.querySelectorAll('#core-kanji-grid .core-kanji-btn');
+  buttons.forEach(btn => {
+    const char = btn.dataset.char;
+    const isActive = state.activeCoreKanji.has(char);
+    btn.classList.toggle('on', isActive);
+    btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+  });
+}
+
+/** Update info text (menunjukkan kanji yang dipilih dan jumlah total) */
+function updateCoreKanjiInfo() {
+  const infoEl = document.getElementById('core-info');
+  if (!infoEl) return;
+
+  if (state.activeCoreKanji.size === 0) {
+    infoEl.textContent = '';
+    return;
+  }
+
+  const selectedChars = Array.from(state.activeCoreKanji);
+  const totalIds = getIdsByCoreKanji(selectedChars);
+
+  // Tampilkan detail per kanji inti
+  const details = selectedChars.map(char => {
+    const group = CORE_KANJI_MAP[char];
+    return char + '(' + (group.derivativeIds.length + 1) + ')';
+  }).join(' ');
+
+  infoEl.innerHTML = '<strong>' + selectedChars.join('、') + '</strong> dipilih — total <strong>' + totalIds.size + '</strong> kanji akan di-test<br><span class="core-detail">' + details + '</span>';
+}
+
+/** Clear core kanji selection (dipanggil saat filter lain dipakai) */
+function clearCoreKanjiSelection() {
+  state.activeCoreKanji.clear();
+  updateCoreKanjiGrid();
+  updateCoreKanjiInfo();
 }
