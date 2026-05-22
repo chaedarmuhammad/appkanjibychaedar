@@ -112,36 +112,57 @@ function getKanjiChars(text) {
 }
 
 /**
- * Membangun peta kanji inti dan turunannya.
- * Kanji inti = entri yang hanya mengandung 1 karakter kanji (bisa ada hiragana/katakana).
- * Turunan = semua entri lain yang mengandung karakter kanji inti tersebut.
- * Urutan mengikuti urutan data di file (KANJI_DATA).
+ * Membangun peta kanji inti dan turunannya berdasarkan URUTAN DI FILE.
+ * Kanji inti = entri pertama yang mengandung 1 karakter kanji unik.
+ * Turunan = semua entri berikutnya (baik 1 kanji maupun 2+ kanji) yang berada
+ *           di bawah kanji inti tersebut sampai kanji inti berikutnya muncul.
+ *
+ * Struktur file: [inti] [turunan...] [inti] [turunan...] ...
  */
 function buildCoreKanjiMap() {
   CORE_KANJI_MAP = {};
 
-  // Kanji inti = entri dengan tepat 1 karakter kanji
-  const coreEntries = KANJI_DATA.filter(card => countKanjiChars(card[1]) === 1);
+  // Bangun grup berdasarkan posisi di file
+  // Entry pertama dengan 1 kanji char yang BELUM pernah muncul = kanji inti baru
+  // Entry setelahnya (sampai kanji inti berikutnya) = turunan
+  const seenCoreChars = new Set();
+  let currentChar = null;
+  let currentCore = null;
+  let currentDerivativeIds = [];
 
-  coreEntries.forEach(core => {
-    const char = getKanjiChars(core[1])[0];
+  KANJI_DATA.forEach(card => {
+    const kanjiChars = getKanjiChars(card[1]);
+    const kanjiCount = kanjiChars.length;
 
-    // Jika sudah ada (duplikat char), skip — ambil yang pertama muncul di data
-    if (CORE_KANJI_MAP[char]) return;
-
-    const derivativeIds = [];
-
-    KANJI_DATA.forEach(card => {
-      if (card[0] !== core[0] && countKanjiChars(card[1]) >= 2 && card[1].includes(char)) {
-        derivativeIds.push(card[0]);
+    if (kanjiCount === 1 && !seenCoreChars.has(kanjiChars[0])) {
+      // Simpan grup sebelumnya
+      if (currentChar !== null) {
+        CORE_KANJI_MAP[currentChar] = {
+          core: currentCore,
+          derivativeIds: currentDerivativeIds
+        };
       }
-    });
 
-    CORE_KANJI_MAP[char] = {
-      core: core,
-      derivativeIds: derivativeIds
-    };
+      // Mulai grup baru
+      currentChar = kanjiChars[0];
+      currentCore = card;
+      currentDerivativeIds = [];
+      seenCoreChars.add(currentChar);
+    } else {
+      // Entry ini adalah turunan dari kanji inti saat ini
+      if (currentChar !== null) {
+        currentDerivativeIds.push(card[0]);
+      }
+    }
   });
+
+  // Simpan grup terakhir
+  if (currentChar !== null) {
+    CORE_KANJI_MAP[currentChar] = {
+      core: currentCore,
+      derivativeIds: currentDerivativeIds
+    };
+  }
 }
 
 /**
