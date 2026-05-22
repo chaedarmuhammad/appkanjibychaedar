@@ -134,6 +134,9 @@ function init() {
 
   // ── Event Listeners (dipasang selalu, meskipun data kosong) ──
 
+  // Tab navigation
+  initTabs();
+
   // Select screen
   document.getElementById('btn-apply-range').addEventListener('click', applyRange);
   document.getElementById('search-input').addEventListener('input', performSearch);
