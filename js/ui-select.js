@@ -242,7 +242,35 @@ function toggleSingleCard(kanjiId, itemEl) {
    CORE KANJI (KANJI INTI) SELECTION
    ────────────────────────────────────────────── */
 
-/** Build grid of core kanji buttons (urutan sesuai data di file) */
+/** Definisi grup tematik untuk mengelompokkan kanji inti */
+const CORE_KANJI_GROUPS = [
+  { key: 'alam', label: 'Alam', icon: '🌿' },
+  { key: 'angka', label: 'Angka', icon: '🔢' },
+  { key: 'tubuh', label: 'Tubuh', icon: '🫀' },
+  { key: 'posisi', label: 'Posisi & Arah', icon: '🧭' },
+  { key: 'orang', label: 'Orang', icon: '👤' },
+  { key: 'keluarga', label: 'Keluarga', icon: '👨‍👩‍👧' },
+  { key: 'waktu', label: 'Waktu', icon: '⏰' },
+  { key: 'cuaca', label: 'Cuaca', icon: '🌤' },
+  { key: 'kata sifat', label: 'Kata Sifat', icon: '📝' },
+  { key: 'warna', label: 'Warna', icon: '🎨' },
+  { key: 'ekspresi', label: 'Ekspresi', icon: '💬' },
+  { key: 'kata kerja', label: 'Kata Kerja', icon: '⚡' },
+  { key: 'makanan & minuman', label: 'Makanan & Minuman', icon: '🍱' },
+  { key: 'kesehatan', label: 'Kesehatan', icon: '🏥' },
+  { key: 'komunikasi', label: 'Komunikasi', icon: '📣' },
+  { key: 'pekerjaan', label: 'Pekerjaan', icon: '💼' },
+  { key: 'ekonomi', label: 'Ekonomi', icon: '💰' },
+  { key: 'benda', label: 'Benda', icon: '📦' },
+  { key: 'tempat', label: 'Tempat', icon: '📍' },
+  { key: 'pendidikan', label: 'Pendidikan', icon: '🎓' },
+  { key: 'transportasi', label: 'Transportasi', icon: '🚗' }
+];
+
+/** State untuk collapse/expand per grup */
+const coreGroupCollapsed = new Set();
+
+/** Build grid of core kanji buttons, dikelompokkan per tema */
 function buildCoreKanjiGrid() {
   const gridEl = document.getElementById('core-kanji-grid');
   if (!gridEl) return;
@@ -253,25 +281,136 @@ function buildCoreKanjiGrid() {
     return;
   }
 
-  // Urutkan berdasarkan ID core (sesuai urutan di file data)
-  const coreChars = Object.keys(CORE_KANJI_MAP).sort((a, b) => {
-    return CORE_KANJI_MAP[a].core[0] - CORE_KANJI_MAP[b].core[0];
+  // Kelompokkan kanji inti berdasarkan kategori
+  const grouped = {};
+  Object.keys(CORE_KANJI_MAP).forEach(char => {
+    const category = CORE_KANJI_MAP[char].core[4]; // kategori dari data
+    if (!grouped[category]) grouped[category] = [];
+    grouped[category].push(char);
   });
 
-  coreChars.forEach(char => {
-    const group = CORE_KANJI_MAP[char];
-    const count = group.derivativeIds.length + 1; // core + derivatives
-
-    const btn = createElement('button', 'core-kanji-btn', char);
-    btn.setAttribute('role', 'checkbox');
-    btn.setAttribute('aria-checked', 'false');
-    btn.setAttribute('aria-label', char + ' (' + group.core[3] + ') — ' + count + ' kanji');
-    btn.setAttribute('title', group.core[3] + ' — ' + count + ' kanji total');
-    btn.dataset.char = char;
-
-    btn.addEventListener('click', () => toggleCoreKanji(char));
-    gridEl.appendChild(btn);
+  // Urutkan kanji dalam setiap grup berdasarkan ID
+  Object.keys(grouped).forEach(key => {
+    grouped[key].sort((a, b) => CORE_KANJI_MAP[a].core[0] - CORE_KANJI_MAP[b].core[0]);
   });
+
+  // Render per grup sesuai urutan CORE_KANJI_GROUPS
+  CORE_KANJI_GROUPS.forEach(groupDef => {
+    const chars = grouped[groupDef.key];
+    if (!chars || chars.length === 0) return;
+
+    const isCollapsed = coreGroupCollapsed.has(groupDef.key);
+
+    // Container grup
+    const groupContainer = createElement('div', 'core-group');
+    groupContainer.dataset.group = groupDef.key;
+
+    // Header grup (clickable untuk collapse/expand)
+    const header = createElement('button', 'core-group-header' + (isCollapsed ? ' collapsed' : ''));
+    header.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+    header.setAttribute('aria-label', 'Grup ' + groupDef.label + ' — ' + chars.length + ' kanji');
+
+    const headerLeft = createElement('span', 'core-group-header-left');
+    const arrow = createElement('span', 'core-group-arrow', isCollapsed ? '▶' : '▼');
+    const icon = createElement('span', 'core-group-icon', groupDef.icon);
+    const label = createElement('span', 'core-group-label', groupDef.label);
+    const count = createElement('span', 'core-group-count', '(' + chars.length + ')');
+
+    headerLeft.appendChild(arrow);
+    headerLeft.appendChild(icon);
+    headerLeft.appendChild(label);
+    headerLeft.appendChild(count);
+    header.appendChild(headerLeft);
+
+    // Tombol pilih semua dalam grup
+    const selectGroupBtn = createElement('span', 'core-group-select-all', 'Pilih semua');
+    selectGroupBtn.setAttribute('role', 'button');
+    selectGroupBtn.setAttribute('tabindex', '0');
+    header.appendChild(selectGroupBtn);
+
+    // Event: collapse/expand
+    header.addEventListener('click', (e) => {
+      // Jika klik pada "Pilih semua", jangan toggle collapse
+      if (e.target === selectGroupBtn) return;
+      toggleGroupCollapse(groupDef.key, groupContainer);
+    });
+
+    // Event: pilih semua dalam grup
+    selectGroupBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      selectAllInGroup(groupDef.key, chars);
+    });
+
+    groupContainer.appendChild(header);
+
+    // Grid kanji dalam grup
+    const kanjiGrid = createElement('div', 'core-group-grid' + (isCollapsed ? ' hidden' : ''));
+    kanjiGrid.dataset.groupGrid = groupDef.key;
+
+    chars.forEach(char => {
+      const group = CORE_KANJI_MAP[char];
+      const totalCount = group.derivativeIds.length + 1;
+
+      const btn = createElement('button', 'core-kanji-btn', char);
+      btn.setAttribute('role', 'checkbox');
+      btn.setAttribute('aria-checked', 'false');
+      btn.setAttribute('aria-label', char + ' (' + group.core[3] + ') — ' + totalCount + ' kanji');
+      btn.setAttribute('title', group.core[3] + ' — ' + totalCount + ' kanji total');
+      btn.dataset.char = char;
+
+      btn.addEventListener('click', () => toggleCoreKanji(char));
+      kanjiGrid.appendChild(btn);
+    });
+
+    groupContainer.appendChild(kanjiGrid);
+    gridEl.appendChild(groupContainer);
+  });
+}
+
+/** Toggle collapse/expand sebuah grup */
+function toggleGroupCollapse(groupKey, container) {
+  const isCollapsed = coreGroupCollapsed.has(groupKey);
+
+  if (isCollapsed) {
+    coreGroupCollapsed.delete(groupKey);
+  } else {
+    coreGroupCollapsed.add(groupKey);
+  }
+
+  const header = container.querySelector('.core-group-header');
+  const grid = container.querySelector('.core-group-grid');
+  const arrow = container.querySelector('.core-group-arrow');
+
+  if (coreGroupCollapsed.has(groupKey)) {
+    header.classList.add('collapsed');
+    header.setAttribute('aria-expanded', 'false');
+    grid.classList.add('hidden');
+    arrow.textContent = '▶';
+  } else {
+    header.classList.remove('collapsed');
+    header.setAttribute('aria-expanded', 'true');
+    grid.classList.remove('hidden');
+    arrow.textContent = '▼';
+  }
+}
+
+/** Pilih semua kanji inti dalam satu grup */
+function selectAllInGroup(groupKey, chars) {
+  // Cek apakah semua sudah terpilih
+  const allSelected = chars.every(char => state.activeCoreKanji.has(char));
+
+  if (allSelected) {
+    // Deselect semua dalam grup
+    chars.forEach(char => state.activeCoreKanji.delete(char));
+  } else {
+    // Select semua dalam grup
+    chars.forEach(char => state.activeCoreKanji.add(char));
+  }
+
+  rebuildSelectionFromCoreKanji();
+  updateCoreKanjiGrid();
+  updateCoreKanjiInfo();
+  updateSelectionCount();
 }
 
 /** Toggle satu kanji inti (pilih/hapus beserta turunannya) */
