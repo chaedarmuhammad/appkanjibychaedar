@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Aplikasi flashcard interaktif untuk belajar kanji Jepang dengan sistem SRS (Spaced Repetition). 528 kanji dengan kana, arti, dan kategori tematik.">
 <title>漢字カード — Kanji Flashcard</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -980,7 +981,7 @@ const KANJI_DATA = [
   [83,"生活","せいかつ","Kehidupan","kehidupan"],
   [84,"学生","がくせい","Siswa","orang"],
   [85,"会う","あう","Bertemu","aktivitas"],
-  [86,"会話","かいわ","Percakapan","aktivitas"],
+  [86,"会議","かいぎ","Rapat","aktivitas"],
   [87,"会社","かいしゃ","Perusahaan","tempat"],
   [88,"見る","みる","Melihat","aktivitas"],
   [89,"見学","けんがく","Studi banding","pendidikan"],
@@ -1089,7 +1090,7 @@ const KANJI_DATA = [
   [190,"問い合わせ","といあわせ","Pertanyaan","kehidupan"],
   [191,"大きい","おおきい","Besar","sifat"],
   [192,"大丈夫","だいじょうぶ","Tidak apa-apa","sifat"],
-  [193,"大人","おとな","Orang dewasa","orang"],
+  [193,"大勢","おおぜい","Banyak orang","orang"],
   [194,"大切な","たいせつな","Penting","sifat"],
   [195,"大変な","たいへんな","Berat/Sulit","sifat"],
   [196,"小さい","ちいさい","Kecil","sifat"],
@@ -1598,7 +1599,12 @@ function showScreen(screenName) {
 /** Update tampilan jumlah kanji terpilih */
 function updateSelectionCount() {
   const countEl = document.getElementById('sel-count');
-  countEl.innerHTML = 'Dipilih: <strong>' + state.selectedIds.size + '</strong> kanji';
+  countEl.textContent = '';
+  countEl.appendChild(document.createTextNode('Dipilih: '));
+  const strongEl = document.createElement('strong');
+  strongEl.textContent = state.selectedIds.size;
+  countEl.appendChild(strongEl);
+  countEl.appendChild(document.createTextNode(' kanji'));
 }
 
 /** Update status visual chip kategori */
@@ -1885,8 +1891,12 @@ function updateProgress() {
   const percentage = Math.round(state.currentIndex / state.deck.length * 100);
   document.getElementById('progress-fill').style.width = percentage + '%';
   document.getElementById('progress-track').setAttribute('aria-valuenow', percentage);
-  document.getElementById('quiz-counter').innerHTML =
-    '<strong>' + (state.currentIndex + 1) + '</strong> / ' + state.deck.length;
+  const counterEl = document.getElementById('quiz-counter');
+  counterEl.textContent = '';
+  const strongEl = document.createElement('strong');
+  strongEl.textContent = state.currentIndex + 1;
+  counterEl.appendChild(strongEl);
+  counterEl.appendChild(document.createTextNode(' / ' + state.deck.length));
   document.getElementById('stat-left').textContent = state.deck.length - state.currentIndex;
 }
 
@@ -1965,10 +1975,12 @@ function handleKeyboard(event) {
 function initSwipeGestures() {
   const wrapEl = document.getElementById('card-wrap');
   let startX = 0;
+  let startY = 0;
   let isDragging = false;
 
   wrapEl.addEventListener('touchstart', (event) => {
     startX = event.touches[0].clientX;
+    startY = event.touches[0].clientY;
     isDragging = true;
   }, { passive: true });
 
@@ -1976,7 +1988,7 @@ function initSwipeGestures() {
     if (!isDragging || !state.isFlipped) return;
 
     const deltaX = event.touches[0].clientX - startX;
-    const deltaY = event.touches[0].clientY - startX; // simplified
+    const deltaY = event.touches[0].clientY - startY;
 
     if (Math.abs(deltaX) > Math.abs(deltaY)) {
       const cardEl = document.getElementById('flashcard');
