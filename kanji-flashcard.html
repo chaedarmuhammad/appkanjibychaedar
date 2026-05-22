@@ -1440,6 +1440,7 @@ const KANJI_DATA = [
    ────────────────────────────────────────────── */
 const state = {
   selectedIds: new Set(),   // ID kanji yang dipilih
+  activeCategories: new Set(), // Kategori yang aktif dipilih oleh user
   mode: 'k2a',             // Mode kuis: k2a | a2k | mix
   deck: [],                // Deck kartu aktif
   currentIndex: 0,         // Index kartu saat ini
@@ -1605,10 +1606,9 @@ function updateSelectionCount() {
 function updateCategoryChips() {
   const chips = document.querySelectorAll('#cat-chips .chip');
   CATEGORIES.forEach((category, index) => {
-    const categoryCards = KANJI_DATA.filter(card => card[4] === category.key);
-    const allSelected = categoryCards.length > 0 && categoryCards.every(card => state.selectedIds.has(card[0]));
-    chips[index].classList.toggle('on', allSelected);
-    chips[index].setAttribute('aria-checked', allSelected ? 'true' : 'false');
+    const isActive = state.activeCategories.has(category.key);
+    chips[index].classList.toggle('on', isActive);
+    chips[index].setAttribute('aria-checked', isActive ? 'true' : 'false');
   });
 }
 
@@ -1641,6 +1641,9 @@ function applyRange() {
     return;
   }
 
+  // Clear active categories (rentang = mode filter berbeda)
+  state.activeCategories.clear();
+
   // Update seleksi
   state.selectedIds.clear();
   KANJI_DATA.forEach(card => {
@@ -1655,13 +1658,18 @@ function applyRange() {
 
 /** Toggle semua kanji dalam satu kategori */
 function toggleCategory(category, chipEl) {
-  const categoryCards = KANJI_DATA.filter(card => card[4] === category.key);
-  const allSelected = categoryCards.every(card => state.selectedIds.has(card[0]));
+  if (state.activeCategories.has(category.key)) {
+    // Matikan kategori ini
+    state.activeCategories.delete(category.key);
+  } else {
+    // Nyalakan kategori ini
+    state.activeCategories.add(category.key);
+  }
 
-  categoryCards.forEach(card => {
-    if (allSelected) {
-      state.selectedIds.delete(card[0]);
-    } else {
+  // Rebuild seleksi berdasarkan kategori aktif
+  state.selectedIds.clear();
+  KANJI_DATA.forEach(card => {
+    if (state.activeCategories.has(card[4])) {
       state.selectedIds.add(card[0]);
     }
   });
@@ -1673,6 +1681,8 @@ function toggleCategory(category, chipEl) {
 /** Pilih semua kanji */
 function selectAll() {
   KANJI_DATA.forEach(card => state.selectedIds.add(card[0]));
+  // Aktifkan semua kategori
+  CATEGORIES.forEach(cat => state.activeCategories.add(cat.key));
   updateCategoryChips();
   updateSelectionCount();
 }
@@ -1680,6 +1690,7 @@ function selectAll() {
 /** Hapus semua seleksi */
 function clearAll() {
   state.selectedIds.clear();
+  state.activeCategories.clear();
   updateCategoryChips();
   updateSelectionCount();
 }
