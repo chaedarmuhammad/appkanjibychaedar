@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>漢字カード — Kanji Flashcard</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header role="banner">
+  <div class="logo">
+    <span class="logo-kanji" aria-hidden="true">漢字</span>
+    <span class="logo-text">Flashcard</span>
+  </div>
+  <div class="header-stats" aria-label="Statistik total">
+    <div class="header-stat">Total: <span id="header-total">0</span> kanji</div>
+  </div>
+</header>
+
+<!-- ═══════════════ SCREEN: SELECT ═══════════════ -->
+<main id="screen-select" class="screen active" role="main" aria-label="Pilih kanji">
+
+  <!-- Rentang Nomor -->
+  <div>
+    <p class="section-title" id="range-label">Rentang nomor</p>
+    <div class="panel" role="group" aria-labelledby="range-label">
+      <div class="range-row">
+        <label for="range-from">Dari nomor</label>
+        <input type="number" class="num-input" id="range-from" min="1" max="528" value="1" aria-describedby="range-error">
+        <label for="range-to">sampai</label>
+        <input type="number" class="num-input" id="range-to" min="1" max="528" value="100" aria-describedby="range-error">
+        <button class="btn btn-accent" id="btn-apply-range" aria-label="Terapkan rentang">Terapkan</button>
+      </div>
+      <div class="range-error" id="range-error" role="alert"></div>
+    </div>
+  </div>
+
+  <!-- Kategori Tematik -->
+  <div>
+    <p class="section-title" id="cat-label">Kategori tematik</p>
+    <div class="panel" role="group" aria-labelledby="cat-label">
+      <div class="chips" id="cat-chips" role="group"></div>
+    </div>
+  </div>
+
+  <!-- Cari Kanji -->
+  <div>
+    <p class="section-title" id="search-label">Cari kanji spesifik</p>
+    <div class="panel">
+      <div class="search-wrap">
+        <span class="search-icon" aria-hidden="true">&#128269;</span>
+        <input type="text" class="search-input" id="search-input" placeholder="Ketik kanji, hiragana, atau arti..." aria-label="Cari kanji" autocomplete="off">
+      </div>
+      <div class="search-results" id="search-results" role="listbox" aria-label="Hasil pencarian"></div>
+    </div>
+  </div>
+
+  <!-- Mode Kuis -->
+  <div>
+    <p class="section-title" id="mode-label">Mode kuis</p>
+    <div class="panel" role="radiogroup" aria-labelledby="mode-label">
+      <div class="mode-group">
+        <button class="mode-btn on" id="mode-k2a" role="radio" aria-checked="true" data-mode="k2a">Kanji &rarr; Arti</button>
+        <button class="mode-btn" id="mode-a2k" role="radio" aria-checked="false" data-mode="a2k">Arti &rarr; Kanji</button>
+        <button class="mode-btn" id="mode-mix" role="radio" aria-checked="false" data-mode="mix">Campur</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SRS & Data -->
+  <div>
+    <p class="section-title">SRS &amp; Data</p>
+    <div class="panel">
+      <div class="data-actions">
+        <button class="btn btn-sm" id="srs-toggle-btn">SRS: Aktif</button>
+        <button class="btn btn-sm" id="btn-export">Export Progress</button>
+        <button class="btn btn-sm" id="btn-import-trigger">Import Progress</button>
+        <input type="file" id="import-file" accept=".json" style="display:none">
+        <button class="btn btn-sm" id="btn-reset">Reset Progress</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="sel-footer">
+    <button class="btn btn-accent" style="padding:11px 28px;font-size:14px" id="btn-start-quiz" aria-label="Mulai kuis">Mulai kuis &rarr;</button>
+    <button class="btn btn-sm" id="btn-select-all">Pilih semua</button>
+    <button class="btn btn-sm" id="btn-clear-all">Hapus semua</button>
+    <span class="sel-count" id="sel-count" aria-live="polite">Dipilih: <strong>100</strong> kanji</span>
+  </div>
+
+</main>
+
+<!-- ═══════════════ SCREEN: QUIZ ═══════════════ -->
+<div id="screen-quiz" class="screen" role="region" aria-label="Kuis flashcard">
+
+  <div class="quiz-header">
+    <button class="btn btn-sm" id="btn-back-quiz" aria-label="Kembali ke pilihan">&larr; Kembali</button>
+    <span class="quiz-counter" id="quiz-counter" aria-live="polite"><strong>1</strong> / 1</span>
+    <button class="btn btn-sm" id="btn-shuffle" aria-label="Acak ulang kartu">Acak ulang</button>
+  </div>
+
+  <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progress-track">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+
+  <div class="card-wrap" id="card-wrap">
+    <div class="card" id="flashcard" tabindex="0" role="button" aria-label="Kartu flashcard, klik untuk membalik">
+      <span class="card-badge" id="card-badge">Kanji &rarr; Arti</span>
+      <span class="card-no" id="card-no">#1</span>
+      <div class="card-main" id="card-main" aria-live="polite"></div>
+      <div class="card-sub" id="card-sub"></div>
+      <div class="card-answer" id="card-answer" aria-live="polite">
+        <div class="card-divider" aria-hidden="true"></div>
+        <div id="answer-content"></div>
+      </div>
+      <span class="flip-hint" id="flip-hint">klik untuk lihat jawaban &middot; spasi</span>
+      <span class="srs-badge" id="srs-badge"></span>
+    </div>
+  </div>
+
+  <div class="swipe-hint" id="swipe-hint">&#8592; Geser kiri = belum tahu &middot; Geser kanan = tahu &#8594;</div>
+
+  <div class="rating-row" id="rating-row">
+    <button class="btn-rate btn-unknown" id="btn-rate-unknown" aria-label="Belum tahu">&#10005; Belum tahu</button>
+    <button class="btn-rate btn-know" id="btn-rate-know" aria-label="Tahu">&#10003; Tahu</button>
+  </div>
+
+  <div class="keyboard-hints" aria-hidden="true">
+    <span class="kh"><kbd class="kbd">Space</kbd> balik kartu</span>
+    <span class="kh"><kbd class="kbd">1</kbd> belum tahu</span>
+    <span class="kh"><kbd class="kbd">2</kbd> tahu</span>
+  </div>
+
+  <div class="stats-row" aria-label="Statistik sesi">
+    <div class="stat-card stat-know"><div class="stat-num" id="stat-know" aria-label="Jumlah tahu">0</div><div class="stat-label">Tahu</div></div>
+    <div class="stat-card stat-unknown"><div class="stat-num" id="stat-unknown" aria-label="Jumlah belum tahu">0</div><div class="stat-label">Belum</div></div>
+    <div class="stat-card stat-left"><div class="stat-num" id="stat-left" aria-label="Jumlah tersisa">0</div><div class="stat-label">Tersisa</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCREEN: RESULT ═══════════════ -->
+<div id="screen-result" class="screen" role="region" aria-label="Hasil kuis">
+  <div class="result-icon" aria-hidden="true">完</div>
+  <div>
+    <h2 class="result-title">Sesi selesai!</h2>
+    <p class="result-sub" id="result-sub" aria-live="polite"></p>
+  </div>
+  <div class="result-big-stats">
+    <div class="res-stat res-green"><div class="res-num" id="res-know">0</div><div class="res-label">Tahu</div></div>
+    <div class="res-stat res-red"><div class="res-num" id="res-unknown">0</div><div class="res-label">Belum tahu</div></div>
+  </div>
+  <div class="result-actions">
+    <button class="btn btn-accent" id="btn-retry-unknown">Ulangi yang belum tahu &rarr;</button>
+    <button class="btn" id="btn-retry-all">Ulangi semua</button>
+    <button class="btn" id="btn-back-result">Pilih kanji lain</button>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════ SCRIPTS ═══════════════ -->
+<!-- Urutan penting: config → state → storage → srs → data → ui → gestures → app -->
+<script src="js/config.js"></script>
+<script src="js/state.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/srs.js"></script>
+<script src="js/data.js"></script>
+<script src="js/ui-select.js"></script>
+<script src="js/ui-quiz.js"></script>
+<script src="js/ui-result.js"></script>
+<script src="js/gestures.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
