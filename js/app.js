@@ -139,7 +139,6 @@ function init() {
 
   // Select screen
   document.getElementById('btn-apply-range').addEventListener('click', applyRange);
-  document.getElementById('search-input').addEventListener('input', performSearch);
   document.getElementById('btn-start-quiz').addEventListener('click', startQuiz);
   document.getElementById('btn-select-all').addEventListener('click', selectAll);
   document.getElementById('btn-clear-all').addEventListener('click', clearAll);
