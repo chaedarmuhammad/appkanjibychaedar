@@ -24,30 +24,62 @@ let CORE_KANJI_MAP = {};
  * Dipanggil sebelum init() untuk memastikan data tersedia.
  */
 async function loadKanjiData() {
+  let jsonData = null;
+
+  // Method 1: Fetch API (works with web server)
   try {
     const response = await fetch('data/kanji.json');
-    if (!response.ok) throw new Error('HTTP ' + response.status);
-
-    const jsonData = await response.json();
-
-    // Konversi dari format objek ke format array [id, kanji, kana, arti, kategori]
-    KANJI_DATA = jsonData.map(item => [
-      item.id,
-      item.kanji,
-      item.kana,
-      item.arti,
-      item.kategori
-    ]);
-
-    // Build core kanji map
-    buildCoreKanjiMap();
-
-    console.log(`[Data] ${KANJI_DATA.length} kanji berhasil dimuat.`);
-    console.log(`[Data] ${Object.keys(CORE_KANJI_MAP).length} kanji inti teridentifikasi.`);
+    if (response.ok) {
+      jsonData = await response.json();
+    }
   } catch (error) {
-    console.error('[Data] Gagal memuat data kanji:', error);
-    showToast('Gagal memuat data kanji!');
+    console.warn('[Data] Fetch gagal:', error.message);
   }
+
+  // Method 2: XMLHttpRequest fallback (works with file:// protocol)
+  if (!jsonData) {
+    try {
+      jsonData = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'data/kanji.json', true);
+        xhr.responseType = 'json';
+        xhr.onload = function () {
+          if (xhr.status === 200 || xhr.status === 0) { // status 0 = file://
+            resolve(xhr.response);
+          } else {
+            reject(new Error('XHR status: ' + xhr.status));
+          }
+        };
+        xhr.onerror = function () { reject(new Error('XHR error')); };
+        xhr.send();
+      });
+    } catch (error) {
+      console.warn('[Data] XHR fallback gagal:', error.message);
+    }
+  }
+
+  if (!jsonData || !Array.isArray(jsonData) || jsonData.length === 0) {
+    console.error('[Data] Gagal memuat data kanji!');
+    // Set data kosong agar app tidak crash
+    KANJI_DATA = [];
+    CORE_KANJI_MAP = {};
+    return;
+  }
+
+  // Konversi dari format objek ke format array [id, kanji, kana, arti, kategori]
+  KANJI_DATA = jsonData.map(item => [
+    item.id,
+    item.kanji,
+    item.kana,
+    item.arti,
+    item.kategori
+  ]);
+
+  // Build core kanji map
+  buildCoreKanjiMap();
+
+  console.log('[Data] ' + KANJI_DATA.length + ' kanji berhasil dimuat.');
+  console.log('[Data] ' + Object.keys(CORE_KANJI_MAP).length + ' kanji inti teridentifikasi.');
 }
 
 /**

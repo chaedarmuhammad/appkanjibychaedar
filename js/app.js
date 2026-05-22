@@ -132,30 +132,7 @@ function init() {
   loadSettings();
   updateSRSButton();
 
-  // Update header total
-  document.getElementById('header-total').textContent = KANJI_DATA.length;
-
-  // Build chip kategori
-  const chipsContainer = document.getElementById('cat-chips');
-  CATEGORIES.forEach(category => {
-    const chipBtn = createElement('button', 'chip', category.label);
-    chipBtn.setAttribute('role', 'checkbox');
-    chipBtn.setAttribute('aria-checked', 'false');
-    chipBtn.addEventListener('click', () => toggleCategory(category, chipBtn));
-    chipsContainer.appendChild(chipBtn);
-  });
-
-  // Build core kanji grid
-  buildCoreKanjiGrid();
-
-  // Set max range input berdasarkan data
-  document.getElementById('range-from').max = KANJI_DATA.length;
-  document.getElementById('range-to').max = KANJI_DATA.length;
-
-  // Terapkan rentang default
-  applyRange();
-
-  // ── Event Listeners ──
+  // ── Event Listeners (dipasang selalu, meskipun data kosong) ──
 
   // Select screen
   document.getElementById('btn-apply-range').addEventListener('click', applyRange);
@@ -195,6 +172,48 @@ function init() {
 
   // Swipe gestures (mobile)
   initSwipeGestures();
+
+  // Cek apakah data tersedia
+  if (!KANJI_DATA || KANJI_DATA.length === 0) {
+    document.getElementById('header-total').textContent = '0';
+    console.warn('[Init] Data kanji kosong, tampilan mungkin tidak lengkap.');
+    showToast('Data kanji tidak tersedia. Pastikan dibuka via web server (bukan file://).');
+    return;
+  }
+
+  // ── Build UI berdasarkan data ──
+
+  // Update header total
+  document.getElementById('header-total').textContent = KANJI_DATA.length;
+
+  // Build chip kategori
+  const chipsContainer = document.getElementById('cat-chips');
+  chipsContainer.replaceChildren(); // Clear dulu untuk hindari duplikat
+  CATEGORIES.forEach(category => {
+    const chipBtn = createElement('button', 'chip', category.label);
+    chipBtn.setAttribute('role', 'checkbox');
+    chipBtn.setAttribute('aria-checked', 'false');
+    chipBtn.addEventListener('click', () => toggleCategory(category, chipBtn));
+    chipsContainer.appendChild(chipBtn);
+  });
+
+  // Build core kanji grid
+  buildCoreKanjiGrid();
+
+  // Set max & default range input berdasarkan data
+  const rangeFrom = document.getElementById('range-from');
+  const rangeTo = document.getElementById('range-to');
+  rangeFrom.max = KANJI_DATA.length;
+  rangeTo.max = KANJI_DATA.length;
+
+  // Pastikan value default valid
+  if (!rangeFrom.value || parseInt(rangeFrom.value) < 1) rangeFrom.value = 1;
+  if (!rangeTo.value || parseInt(rangeTo.value) < 1 || parseInt(rangeTo.value) > KANJI_DATA.length) {
+    rangeTo.value = Math.min(100, KANJI_DATA.length);
+  }
+
+  // Terapkan rentang default
+  applyRange();
 }
 
 // ── Start the app ──
