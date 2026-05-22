@@ -75,6 +75,7 @@ function renderCard() {
   document.getElementById('swipe-hint').style.opacity = '1';
 
   updateProgress();
+  updateNavButtons();
 }
 
 /** Balik kartu untuk melihat jawaban */
@@ -135,4 +136,30 @@ function updateProgress() {
   document.getElementById('quiz-counter').innerHTML =
     '<strong>' + (state.currentIndex + 1) + '</strong> / ' + state.deck.length;
   document.getElementById('stat-left').textContent = state.deck.length - state.currentIndex;
+}
+
+
+
+/** Update status tombol navigasi */
+function updateNavButtons() {
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  btnPrev.disabled = state.currentIndex === 0;
+  btnNext.disabled = state.currentIndex >= state.deck.length - 1;
+}
+
+/** Navigasi ke kartu sebelumnya */
+function goToPrevCard() {
+  if (state.currentIndex > 0) {
+    state.currentIndex--;
+    renderCard();
+  }
+}
+
+/** Navigasi ke kartu selanjutnya (tanpa rating) */
+function goToNextCard() {
+  if (state.currentIndex < state.deck.length - 1) {
+    state.currentIndex++;
+    renderCard();
+  }
 }

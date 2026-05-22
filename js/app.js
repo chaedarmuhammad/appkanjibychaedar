@@ -163,6 +163,8 @@ function init() {
   document.getElementById('flashcard').addEventListener('click', flipCard);
   document.getElementById('btn-rate-unknown').addEventListener('click', () => rateCard(false));
   document.getElementById('btn-rate-know').addEventListener('click', () => rateCard(true));
+  document.getElementById('btn-prev').addEventListener('click', goToPrevCard);
+  document.getElementById('btn-next').addEventListener('click', goToNextCard);
 
   // Result screen
   document.getElementById('btn-retry-unknown').addEventListener('click', retryUnknown);

@@ -16,6 +16,12 @@ function handleKeyboard(event) {
     rateCard(false);
   } else if (event.key === '2' && state.isFlipped) {
     rateCard(true);
+  } else if (event.code === 'ArrowLeft') {
+    event.preventDefault();
+    goToPrevCard();
+  } else if (event.code === 'ArrowRight') {
+    event.preventDefault();
+    goToNextCard();
   }
 }
 

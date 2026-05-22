@@ -757,6 +757,41 @@ header {
   letter-spacing: 0.05em;
 }
 
+/* -- Navigation Buttons -- */
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.btn-nav {
+  padding: 10px 18px;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+}
+
+.btn-nav:hover {
+  background: var(--surface);
+  border-color: var(--accent2);
+}
+
+.btn-nav:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-nav:disabled:hover {
+  background: var(--surface2);
+  border-color: var(--border2);
+}
+
 /* -- Swipe Hint -- */
 .swipe-hint {
   display: none;
