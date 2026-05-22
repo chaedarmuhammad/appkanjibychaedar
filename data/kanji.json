@@ -3694,5 +3694,677 @@
     "kana": "おなじ",
     "arti": "Sama",
     "kategori": "kata sifat"
+  },
+  {
+    "id": 529,
+    "kanji": "不",
+    "kana": "ふ",
+    "arti": "Tidak",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 530,
+    "kanji": "世",
+    "kana": "よ",
+    "arti": "Dunia/Generasi",
+    "kategori": "orang"
+  },
+  {
+    "id": 531,
+    "kanji": "事",
+    "kana": "こと",
+    "arti": "Hal/Perkara",
+    "kategori": "benda"
+  },
+  {
+    "id": 532,
+    "kanji": "仕",
+    "kana": "し",
+    "arti": "Melayani",
+    "kategori": "kata kerja"
+  },
+  {
+    "id": 533,
+    "kanji": "代",
+    "kana": "だい",
+    "arti": "Generasi/Pengganti",
+    "kategori": "waktu"
+  },
+  {
+    "id": 534,
+    "kanji": "便",
+    "kana": "べん",
+    "arti": "Nyaman/Surat",
+    "kategori": "komunikasi"
+  },
+  {
+    "id": 535,
+    "kanji": "信",
+    "kana": "しん",
+    "arti": "Kepercayaan",
+    "kategori": "komunikasi"
+  },
+  {
+    "id": 536,
+    "kanji": "元",
+    "kana": "もと",
+    "arti": "Asal/Awal",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 537,
+    "kanji": "先",
+    "kana": "さき",
+    "arti": "Depan/Duluan",
+    "kategori": "posisi"
+  },
+  {
+    "id": 538,
+    "kanji": "写",
+    "kana": "しゃ",
+    "arti": "Menyalin",
+    "kategori": "kata kerja"
+  },
+  {
+    "id": 539,
+    "kanji": "出",
+    "kana": "で",
+    "arti": "Keluar",
+    "kategori": "kata kerja"
+  },
+  {
+    "id": 540,
+    "kanji": "利",
+    "kana": "り",
+    "arti": "Keuntungan",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 541,
+    "kanji": "勉",
+    "kana": "べん",
+    "arti": "Berusaha",
+    "kategori": "kata kerja"
+  },
+  {
+    "id": 542,
+    "kanji": "医",
+    "kana": "い",
+    "arti": "Kedokteran",
+    "kategori": "kesehatan"
+  },
+  {
+    "id": 543,
+    "kanji": "卒",
+    "kana": "そつ",
+    "arti": "Lulus",
+    "kategori": "pendidikan"
+  },
+  {
+    "id": 544,
+    "kanji": "単",
+    "kana": "たん",
+    "arti": "Tunggal",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 545,
+    "kanji": "去",
+    "kana": "きょ",
+    "arti": "Pergi/Lalu",
+    "kategori": "waktu"
+  },
+  {
+    "id": 546,
+    "kanji": "受",
+    "kana": "じゅ",
+    "arti": "Menerima",
+    "kategori": "kata kerja"
+  },
+  {
+    "id": 547,
+    "kanji": "号",
+    "kana": "ごう",
+    "arti": "Nomor/Tanda",
+    "kategori": "benda"
+  },
+  {
+    "id": 548,
+    "kanji": "合",
+    "kana": "あい",
+    "arti": "Cocok/Gabung",
+    "kategori": "kata kerja"
+  },
+  {
+    "id": 549,
+    "kanji": "名",
+    "kana": "な",
+    "arti": "Nama",
+    "kategori": "orang"
+  },
+  {
+    "id": 550,
+    "kanji": "問",
+    "kana": "もん",
+    "arti": "Pertanyaan",
+    "kategori": "komunikasi"
+  },
+  {
+    "id": 551,
+    "kanji": "図",
+    "kana": "ず",
+    "arti": "Gambar/Peta",
+    "kategori": "benda"
+  },
+  {
+    "id": 552,
+    "kanji": "地",
+    "kana": "ち",
+    "arti": "Tanah/Tempat",
+    "kategori": "tempat"
+  },
+  {
+    "id": 553,
+    "kanji": "場",
+    "kana": "ば",
+    "arti": "Tempat",
+    "kategori": "tempat"
+  },
+  {
+    "id": 554,
+    "kanji": "天",
+    "kana": "てん",
+    "arti": "Langit",
+    "kategori": "alam"
+  },
+  {
+    "id": 555,
+    "kanji": "太",
+    "kana": "ふと",
+    "arti": "Gemuk/Besar",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 556,
+    "kanji": "女",
+    "kana": "おんな",
+    "arti": "Perempuan",
+    "kategori": "orang"
+  },
+  {
+    "id": 557,
+    "kanji": "子",
+    "kana": "こ",
+    "arti": "Anak",
+    "kategori": "keluarga"
+  },
+  {
+    "id": 558,
+    "kanji": "季",
+    "kana": "き",
+    "arti": "Musim",
+    "kategori": "cuaca"
+  },
+  {
+    "id": 559,
+    "kanji": "家",
+    "kana": "いえ",
+    "arti": "Rumah",
+    "kategori": "tempat"
+  },
+  {
+    "id": 560,
+    "kanji": "宿",
+    "kana": "やど",
+    "arti": "Penginapan",
+    "kategori": "tempat"
+  },
+  {
+    "id": 561,
+    "kanji": "局",
+    "kana": "きょく",
+    "arti": "Kantor/Biro",
+    "kategori": "tempat"
+  },
+  {
+    "id": 562,
+    "kanji": "屋",
+    "kana": "や",
+    "arti": "Toko/Atap",
+    "kategori": "tempat"
+  },
+  {
+    "id": 563,
+    "kanji": "工",
+    "kana": "こう",
+    "arti": "Kerajinan/Teknik",
+    "kategori": "pekerjaan"
+  },
+  {
+    "id": 564,
+    "kanji": "平",
+    "kana": "へい",
+    "arti": "Datar/Damai",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 565,
+    "kanji": "強",
+    "kana": "つよ",
+    "arti": "Kuat",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 566,
+    "kanji": "性",
+    "kana": "せい",
+    "arti": "Sifat/Gender",
+    "kategori": "orang"
+  },
+  {
+    "id": 567,
+    "kanji": "意",
+    "kana": "い",
+    "arti": "Makna/Niat",
+    "kategori": "komunikasi"
+  },
+  {
+    "id": 568,
+    "kanji": "故",
+    "kana": "こ",
+    "arti": "Sebab/Lama",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 569,
+    "kanji": "文",
+    "kana": "ぶん",
+    "arti": "Kalimat/Tulisan",
+    "kategori": "pendidikan"
+  },
+  {
+    "id": 570,
+    "kanji": "料",
+    "kana": "りょう",
+    "arti": "Bahan/Biaya",
+    "kategori": "benda"
+  },
+  {
+    "id": 571,
+    "kanji": "族",
+    "kana": "ぞく",
+    "arti": "Keluarga/Suku",
+    "kategori": "keluarga"
+  },
+  {
+    "id": 572,
+    "kanji": "日",
+    "kana": "ひ",
+    "arti": "Hari/Matahari",
+    "kategori": "waktu"
+  },
+  {
+    "id": 573,
+    "kanji": "晩",
+    "kana": "ばん",
+    "arti": "Malam",
+    "kategori": "waktu"
+  },
+  {
+    "id": 574,
+    "kanji": "曜",
+    "kana": "よう",
+    "arti": "Hari (dalam minggu)",
+    "kategori": "waktu"
+  },
+  {
+    "id": 575,
+    "kanji": "最",
+    "kana": "さい",
+    "arti": "Paling",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 576,
+    "kanji": "有",
+    "kana": "ゆう",
+    "arti": "Ada/Memiliki",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 577,
+    "kanji": "本",
+    "kana": "ほん",
+    "arti": "Buku/Asal",
+    "kategori": "benda"
+  },
+  {
+    "id": 578,
+    "kanji": "業",
+    "kana": "ぎょう",
+    "arti": "Usaha/Industri",
+    "kategori": "pekerjaan"
+  },
+  {
+    "id": 579,
+    "kanji": "様",
+    "kana": "さま",
+    "arti": "Tuan/Bentuk",
+    "kategori": "orang"
+  },
+  {
+    "id": 580,
+    "kanji": "毎",
+    "kana": "まい",
+    "arti": "Setiap",
+    "kategori": "waktu"
+  },
+  {
+    "id": 581,
+    "kanji": "気",
+    "kana": "き",
+    "arti": "Udara/Perasaan",
+    "kategori": "alam"
+  },
+  {
+    "id": 582,
+    "kanji": "注",
+    "kana": "ちゅう",
+    "arti": "Menuang/Perhatian",
+    "kategori": "kata kerja"
+  },
+  {
+    "id": 583,
+    "kanji": "洋",
+    "kana": "よう",
+    "arti": "Samudra/Barat",
+    "kategori": "alam"
+  },
+  {
+    "id": 584,
+    "kanji": "球",
+    "kana": "たま",
+    "arti": "Bola",
+    "kategori": "benda"
+  },
+  {
+    "id": 585,
+    "kanji": "理",
+    "kana": "り",
+    "arti": "Alasan/Logika",
+    "kategori": "pendidikan"
+  },
+  {
+    "id": 586,
+    "kanji": "産",
+    "kana": "さん",
+    "arti": "Melahirkan/Produksi",
+    "kategori": "kata kerja"
+  },
+  {
+    "id": 587,
+    "kanji": "用",
+    "kana": "よう",
+    "arti": "Keperluan",
+    "kategori": "benda"
+  },
+  {
+    "id": 588,
+    "kanji": "田",
+    "kana": "た",
+    "arti": "Sawah",
+    "kategori": "alam"
+  },
+  {
+    "id": 589,
+    "kanji": "由",
+    "kana": "ゆ",
+    "arti": "Sebab/Alasan",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 590,
+    "kanji": "男",
+    "kana": "おとこ",
+    "arti": "Laki-laki",
+    "kategori": "orang"
+  },
+  {
+    "id": 591,
+    "kanji": "界",
+    "kana": "かい",
+    "arti": "Dunia/Batas",
+    "kategori": "benda"
+  },
+  {
+    "id": 592,
+    "kanji": "番",
+    "kana": "ばん",
+    "arti": "Giliran/Nomor",
+    "kategori": "benda"
+  },
+  {
+    "id": 593,
+    "kanji": "病",
+    "kana": "びょう",
+    "arti": "Sakit",
+    "kategori": "kesehatan"
+  },
+  {
+    "id": 594,
+    "kanji": "発",
+    "kana": "はつ",
+    "arti": "Berangkat/Muncul",
+    "kategori": "kata kerja"
+  },
+  {
+    "id": 595,
+    "kanji": "真",
+    "kana": "ま",
+    "arti": "Benar/Asli",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 596,
+    "kanji": "節",
+    "kana": "せつ",
+    "arti": "Bagian/Musim",
+    "kategori": "waktu"
+  },
+  {
+    "id": 597,
+    "kanji": "経",
+    "kana": "けい",
+    "arti": "Melewati/Pengalaman",
+    "kategori": "kata kerja"
+  },
+  {
+    "id": 598,
+    "kanji": "者",
+    "kana": "もの",
+    "arti": "Orang (pelaku)",
+    "kategori": "orang"
+  },
+  {
+    "id": 599,
+    "kanji": "職",
+    "kana": "しょく",
+    "arti": "Pekerjaan",
+    "kategori": "pekerjaan"
+  },
+  {
+    "id": 600,
+    "kanji": "舎",
+    "kana": "しゃ",
+    "arti": "Bangunan",
+    "kategori": "tempat"
+  },
+  {
+    "id": 601,
+    "kanji": "良",
+    "kana": "よい",
+    "arti": "Baik",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 602,
+    "kanji": "花",
+    "kana": "はな",
+    "arti": "Bunga",
+    "kategori": "alam"
+  },
+  {
+    "id": 603,
+    "kanji": "若",
+    "kana": "わか",
+    "arti": "Muda",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 604,
+    "kanji": "英",
+    "kana": "えい",
+    "arti": "Inggris/Cemerlang",
+    "kategori": "pendidikan"
+  },
+  {
+    "id": 605,
+    "kanji": "菜",
+    "kana": "な",
+    "arti": "Sayur",
+    "kategori": "makanan & minuman"
+  },
+  {
+    "id": 606,
+    "kanji": "言",
+    "kana": "こと",
+    "arti": "Kata/Berkata",
+    "kategori": "komunikasi"
+  },
+  {
+    "id": 607,
+    "kanji": "訪",
+    "kana": "ほう",
+    "arti": "Berkunjung",
+    "kategori": "kata kerja"
+  },
+  {
+    "id": 608,
+    "kanji": "試",
+    "kana": "し",
+    "arti": "Mencoba",
+    "kategori": "kata kerja"
+  },
+  {
+    "id": 609,
+    "kanji": "語",
+    "kana": "ご",
+    "arti": "Bahasa/Kata",
+    "kategori": "pendidikan"
+  },
+  {
+    "id": 610,
+    "kanji": "調",
+    "kana": "ちょう",
+    "arti": "Menyelidiki/Nada",
+    "kategori": "kata kerja"
+  },
+  {
+    "id": 611,
+    "kanji": "質",
+    "kana": "しつ",
+    "arti": "Kualitas/Sifat",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 612,
+    "kanji": "農",
+    "kana": "のう",
+    "arti": "Pertanian",
+    "kategori": "pekerjaan"
+  },
+  {
+    "id": 613,
+    "kanji": "週",
+    "kana": "しゅう",
+    "arti": "Minggu",
+    "kategori": "waktu"
+  },
+  {
+    "id": 614,
+    "kanji": "過",
+    "kana": "か",
+    "arti": "Melewati/Berlebihan",
+    "kategori": "kata kerja"
+  },
+  {
+    "id": 615,
+    "kanji": "部",
+    "kana": "ぶ",
+    "arti": "Bagian",
+    "kategori": "benda"
+  },
+  {
+    "id": 616,
+    "kanji": "郵",
+    "kana": "ゆう",
+    "arti": "Pos/Surat",
+    "kategori": "komunikasi"
+  },
+  {
+    "id": 617,
+    "kanji": "野",
+    "kana": "の",
+    "arti": "Lapangan/Liar",
+    "kategori": "alam"
+  },
+  {
+    "id": 618,
+    "kanji": "限",
+    "kana": "げん",
+    "arti": "Batas",
+    "kategori": "kata sifat"
+  },
+  {
+    "id": 619,
+    "kanji": "院",
+    "kana": "いん",
+    "arti": "Institusi",
+    "kategori": "tempat"
+  },
+  {
+    "id": 620,
+    "kanji": "電",
+    "kana": "でん",
+    "arti": "Listrik",
+    "kategori": "benda"
+  },
+  {
+    "id": 621,
+    "kanji": "震",
+    "kana": "しん",
+    "arti": "Gempa/Getar",
+    "kategori": "alam"
+  },
+  {
+    "id": 622,
+    "kanji": "音",
+    "kana": "おと",
+    "arti": "Suara",
+    "kategori": "komunikasi"
+  },
+  {
+    "id": 623,
+    "kanji": "題",
+    "kana": "だい",
+    "arti": "Topik/Judul",
+    "kategori": "pendidikan"
+  },
+  {
+    "id": 624,
+    "kanji": "験",
+    "kana": "けん",
+    "arti": "Pengalaman/Ujian",
+    "kategori": "pendidikan"
   }
 ]
