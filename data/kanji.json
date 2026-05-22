@@ -375,7 +375,7 @@
     "kanji": "力",
     "kana": "ちから",
     "arti": "Tenaga",
-    "kategori": "tubuh"
+    "kategori": "benda"
   },
   {
     "id": 55,
@@ -564,7 +564,7 @@
     "kanji": "生",
     "kana": "せい",
     "arti": "Hidup",
-    "kategori": "kata sifat"
+    "kategori": "kata kerja"
   },
   {
     "id": 82,
@@ -2216,7 +2216,7 @@
     "kanji": "運動",
     "kana": "うんどう",
     "arti": "Olahraga",
-    "kategori": "kata kerja"
+    "kategori": "benda"
   },
   {
     "id": 318,
@@ -3091,7 +3091,7 @@
     "kanji": "卒業",
     "kana": "そつぎょう",
     "arti": "Lulus",
-    "kategori": "kata kerja"
+    "kategori": "pendidikan"
   },
   {
     "id": 443,
@@ -3238,7 +3238,7 @@
     "kanji": "光る",
     "kana": "ひかる",
     "arti": "Bersinar",
-    "kategori": "alam"
+    "kategori": "kata kerja"
   },
   {
     "id": 464,
@@ -3420,7 +3420,7 @@
     "kanji": "声",
     "kana": "こえ",
     "arti": "Suara",
-    "kategori": "tubuh"
+    "kategori": "komunikasi"
   },
   {
     "id": 490,
@@ -3504,7 +3504,7 @@
     "kanji": "味",
     "kana": "あじ",
     "arti": "Rasa",
-    "kategori": "benda"
+    "kategori": "makanan & minuman"
   },
   {
     "id": 502,
