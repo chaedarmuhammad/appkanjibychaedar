@@ -88,21 +88,51 @@ async function loadKanjiData() {
 }
 
 /**
+ * Menghitung jumlah karakter kanji (CJK) dalam sebuah string.
+ */
+function countKanjiChars(text) {
+  let count = 0;
+  for (let i = 0; i < text.length; i++) {
+    const code = text.charCodeAt(i);
+    if (code >= 0x4E00 && code <= 0x9FFF) count++;
+  }
+  return count;
+}
+
+/**
+ * Mengekstrak karakter kanji (CJK) dari sebuah string.
+ */
+function getKanjiChars(text) {
+  const chars = [];
+  for (let i = 0; i < text.length; i++) {
+    const code = text.charCodeAt(i);
+    if (code >= 0x4E00 && code <= 0x9FFF) chars.push(text[i]);
+  }
+  return chars;
+}
+
+/**
  * Membangun peta kanji inti dan turunannya.
- * Kanji inti = entri dengan 1 karakter kanji.
+ * Kanji inti = entri yang hanya mengandung 1 karakter kanji (bisa ada hiragana/katakana).
  * Turunan = semua entri lain yang mengandung karakter kanji inti tersebut.
+ * Urutan mengikuti urutan data di file (KANJI_DATA).
  */
 function buildCoreKanjiMap() {
   CORE_KANJI_MAP = {};
 
-  const coreEntries = KANJI_DATA.filter(card => card[1].length === 1);
+  // Kanji inti = entri dengan tepat 1 karakter kanji
+  const coreEntries = KANJI_DATA.filter(card => countKanjiChars(card[1]) === 1);
 
   coreEntries.forEach(core => {
-    const char = core[1];
+    const char = getKanjiChars(core[1])[0];
+
+    // Jika sudah ada (duplikat char), skip — ambil yang pertama muncul di data
+    if (CORE_KANJI_MAP[char]) return;
+
     const derivativeIds = [];
 
     KANJI_DATA.forEach(card => {
-      if (card[0] !== core[0] && card[1].includes(char)) {
+      if (card[0] !== core[0] && countKanjiChars(card[1]) >= 2 && card[1].includes(char)) {
         derivativeIds.push(card[0]);
       }
     });

@@ -242,7 +242,7 @@ function toggleSingleCard(kanjiId, itemEl) {
    CORE KANJI (KANJI INTI) SELECTION
    ────────────────────────────────────────────── */
 
-/** Build grid of core kanji buttons */
+/** Build grid of core kanji buttons (urutan sesuai data di file) */
 function buildCoreKanjiGrid() {
   const gridEl = document.getElementById('core-kanji-grid');
   if (!gridEl) return;
@@ -253,7 +253,11 @@ function buildCoreKanjiGrid() {
     return;
   }
 
-  const coreChars = Object.keys(CORE_KANJI_MAP);
+  // Urutkan berdasarkan ID core (sesuai urutan di file data)
+  const coreChars = Object.keys(CORE_KANJI_MAP).sort((a, b) => {
+    return CORE_KANJI_MAP[a].core[0] - CORE_KANJI_MAP[b].core[0];
+  });
+
   coreChars.forEach(char => {
     const group = CORE_KANJI_MAP[char];
     const count = group.derivativeIds.length + 1; // core + derivatives
