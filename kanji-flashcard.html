@@ -62,6 +62,7 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
+
   .header-stats {
     display: flex;
     gap: 20px;
@@ -127,6 +128,14 @@
     transition: border-color 0.2s;
   }
   .num-input:focus { border-color: var(--accent2); }
+  .range-error {
+    display: none;
+    color: var(--red);
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  .range-error.visible { display: block; }
+
 
   .btn {
     padding: 9px 18px;
@@ -141,6 +150,7 @@
     font-weight: 400;
   }
   .btn:hover { background: var(--surface2); border-color: var(--border2); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .btn-accent {
     background: var(--accent);
     color: #0f0e0d;
@@ -165,6 +175,7 @@
     font-weight: 400;
   }
   .chip:hover { border-color: var(--border2); color: var(--text); }
+  .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .chip.on {
     background: var(--accent);
     color: #0f0e0d;
@@ -186,7 +197,9 @@
     transition: all 0.15s;
   }
   .mode-btn:hover { border-color: var(--border2); color: var(--text); }
+  .mode-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .mode-btn.on { border-color: var(--accent); color: var(--accent); background: rgba(232,201,122,0.08); }
+
 
   .sel-footer {
     display: flex;
@@ -203,9 +216,7 @@
   .sel-count strong { color: var(--accent); }
 
   /* search */
-  .search-wrap {
-    position: relative;
-  }
+  .search-wrap { position: relative; }
   .search-input {
     width: 100%;
     padding: 10px 14px 10px 38px;
@@ -246,6 +257,7 @@
     transition: background 0.12s;
   }
   .search-item:hover { background: var(--surface2); }
+  .search-item:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
   .search-item.selected-item { background: rgba(232,201,122,0.08); }
   .si-num { font-size: 11px; color: var(--text3); min-width: 28px; }
   .si-kanji { font-family: 'Noto Serif JP', serif; font-size: 18px; color: var(--text); min-width: 48px; }
@@ -262,6 +274,7 @@
     transition: all 0.15s;
   }
   .selected-item .si-check { background: var(--accent); border-color: var(--accent); color: #0f0e0d; }
+
 
   /* ── Quiz Screen ── */
   #screen-quiz {
@@ -306,6 +319,9 @@
     perspective: 1000px;
     margin-bottom: 24px;
     flex: 1;
+    touch-action: pan-y;
+    position: relative;
+    overflow: hidden;
   }
   .card {
     background: var(--surface);
@@ -325,6 +341,7 @@
   }
   .card:hover { border-color: var(--border2); transform: translateY(-1px); }
   .card:active { transform: translateY(0); }
+  .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   .card-badge {
     position: absolute;
@@ -344,6 +361,7 @@
     color: var(--text3);
   }
 
+
   .card-main {
     font-family: 'Noto Serif JP', serif;
     font-size: 72px;
@@ -358,14 +376,12 @@
     color: var(--text2);
     font-weight: 300;
   }
-
   .card-divider {
     width: 40px;
     height: 1px;
     background: var(--border2);
     margin: 20px auto;
   }
-
   .card-answer { display: none; text-align: center; }
   .card-answer.visible { display: block; animation: fadeUp 0.25s ease; }
   @keyframes fadeUp {
@@ -389,7 +405,6 @@
     color: var(--text);
     margin-bottom: 8px;
   }
-
   .flip-hint {
     position: absolute;
     bottom: 16px;
@@ -401,6 +416,20 @@
     white-space: nowrap;
     transition: opacity 0.2s;
   }
+
+  /* Swipe indicator */
+  .swipe-hint {
+    display: none;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+  @media (pointer: coarse) {
+    .swipe-hint { display: block; }
+    .keyboard-hints { display: none !important; }
+  }
+
 
   /* Rating */
   .rating-row {
@@ -428,6 +457,7 @@
     justify-content: center;
     gap: 8px;
   }
+  .btn-rate:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .btn-know {
     background: var(--green-bg);
     color: var(--green);
@@ -488,6 +518,7 @@
     min-width: 22px;
   }
 
+
   /* ── Result Screen ── */
   #screen-result {
     max-width: 560px;
@@ -528,8 +559,49 @@
   .res-label { font-size: 12px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; }
   .res-green .res-num { color: var(--green); }
   .res-red .res-num { color: var(--red); }
-
   .result-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+  /* Export/Import */
+  .data-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* SRS badge */
+  .srs-badge {
+    position: absolute;
+    bottom: 18px;
+    right: 20px;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(232,201,122,0.1);
+    color: var(--accent2);
+    letter-spacing: 0.05em;
+  }
+
+  /* Toast notification */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 999;
+    pointer-events: none;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 
   /* scrollbar */
   ::-webkit-scrollbar { width: 4px; }
@@ -548,360 +620,791 @@
 </head>
 <body>
 
-<header>
+
+<header role="banner">
   <div class="logo">
-    <span class="logo-kanji">漢字</span>
+    <span class="logo-kanji" aria-hidden="true">漢字</span>
     <span class="logo-text">Flashcard</span>
   </div>
-  <div class="header-stats">
-    <div class="header-stat">Total: <span>557</span> kanji</div>
+  <div class="header-stats" aria-label="Statistik total">
+    <div class="header-stat">Total: <span id="header-total">0</span> kanji</div>
   </div>
 </header>
 
 <!-- ═══════════════ SELECT SCREEN ═══════════════ -->
-<div id="screen-select" class="screen active">
+<main id="screen-select" class="screen active" role="main" aria-label="Pilih kanji">
 
   <div>
-    <p class="section-title">Rentang nomor</p>
-    <div class="panel">
+    <p class="section-title" id="range-label">Rentang nomor</p>
+    <div class="panel" role="group" aria-labelledby="range-label">
       <div class="range-row">
-        <label>Dari nomor</label>
-        <input type="number" class="num-input" id="range-from" min="1" max="557" value="1">
-        <label>sampai</label>
-        <input type="number" class="num-input" id="range-to" min="1" max="557" value="100">
-        <button class="btn btn-accent" onclick="applyRange()">Terapkan</button>
+        <label for="range-from">Dari nomor</label>
+        <input type="number" class="num-input" id="range-from" min="1" max="557" value="1" aria-describedby="range-error">
+        <label for="range-to">sampai</label>
+        <input type="number" class="num-input" id="range-to" min="1" max="557" value="100" aria-describedby="range-error">
+        <button class="btn btn-accent" onclick="applyRange()" aria-label="Terapkan rentang">Terapkan</button>
       </div>
+      <div class="range-error" id="range-error" role="alert"></div>
     </div>
   </div>
 
   <div>
-    <p class="section-title">Pilih cepat per kelompok</p>
-    <div class="panel">
-      <div class="chips" id="cat-chips"></div>
+    <p class="section-title" id="cat-label">Kategori tematik</p>
+    <div class="panel" role="group" aria-labelledby="cat-label">
+      <div class="chips" id="cat-chips" role="group"></div>
     </div>
   </div>
 
   <div>
-    <p class="section-title">Cari kanji spesifik</p>
+    <p class="section-title" id="search-label">Cari kanji spesifik</p>
     <div class="panel">
       <div class="search-wrap">
-        <span class="search-icon">🔍</span>
-        <input type="text" class="search-input" id="search-input" placeholder="Ketik kanji, hiragana, atau arti...">
+        <span class="search-icon" aria-hidden="true">&#128269;</span>
+        <input type="text" class="search-input" id="search-input" placeholder="Ketik kanji, hiragana, atau arti..." aria-label="Cari kanji" autocomplete="off">
       </div>
-      <div class="search-results" id="search-results"></div>
+      <div class="search-results" id="search-results" role="listbox" aria-label="Hasil pencarian"></div>
     </div>
   </div>
 
   <div>
-    <p class="section-title">Mode kuis</p>
-    <div class="panel">
+    <p class="section-title" id="mode-label">Mode kuis</p>
+    <div class="panel" role="radiogroup" aria-labelledby="mode-label">
       <div class="mode-group">
-        <button class="mode-btn on" id="mode-k2a" onclick="setMode('k2a')">Kanji → Arti</button>
-        <button class="mode-btn" id="mode-a2k" onclick="setMode('a2k')">Arti → Kanji</button>
-        <button class="mode-btn" id="mode-mix" onclick="setMode('mix')">Campur</button>
+        <button class="mode-btn on" id="mode-k2a" role="radio" aria-checked="true" onclick="setMode('k2a')">Kanji &rarr; Arti</button>
+        <button class="mode-btn" id="mode-a2k" role="radio" aria-checked="false" onclick="setMode('a2k')">Arti &rarr; Kanji</button>
+        <button class="mode-btn" id="mode-mix" role="radio" aria-checked="false" onclick="setMode('mix')">Campur</button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <p class="section-title">SRS &amp; Data</p>
+    <div class="panel">
+      <div class="data-actions">
+        <button class="btn btn-sm" onclick="toggleSRS()" id="srs-toggle-btn">SRS: Aktif</button>
+        <button class="btn btn-sm" onclick="exportProgress()">Export Progress</button>
+        <button class="btn btn-sm" onclick="document.getElementById('import-file').click()">Import Progress</button>
+        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importProgress(event)">
+        <button class="btn btn-sm" onclick="resetProgress()">Reset Progress</button>
       </div>
     </div>
   </div>
 
   <div class="sel-footer">
-    <button class="btn btn-accent" style="padding:11px 28px;font-size:14px" onclick="startQuiz()">Mulai kuis →</button>
+    <button class="btn btn-accent" style="padding:11px 28px;font-size:14px" onclick="startQuiz()" aria-label="Mulai kuis">Mulai kuis &rarr;</button>
     <button class="btn btn-sm" onclick="selectAll()">Pilih semua</button>
     <button class="btn btn-sm" onclick="clearAll()">Hapus semua</button>
-    <span class="sel-count" id="sel-count">Dipilih: <strong>100</strong> kanji</span>
+    <span class="sel-count" id="sel-count" aria-live="polite">Dipilih: <strong>100</strong> kanji</span>
   </div>
 
-</div>
+</main>
+
 
 <!-- ═══════════════ QUIZ SCREEN ═══════════════ -->
-<div id="screen-quiz" class="screen">
+<div id="screen-quiz" class="screen" role="region" aria-label="Kuis flashcard">
 
   <div class="quiz-header">
-    <button class="btn btn-sm" onclick="backToSelect()">← Kembali</button>
-    <span class="quiz-counter" id="quiz-counter"><strong>1</strong> / 1</span>
-    <button class="btn btn-sm" onclick="shuffleAndRestart()">Acak ulang</button>
+    <button class="btn btn-sm" onclick="backToSelect()" aria-label="Kembali ke pilihan">&larr; Kembali</button>
+    <span class="quiz-counter" id="quiz-counter" aria-live="polite"><strong>1</strong> / 1</span>
+    <button class="btn btn-sm" onclick="shuffleAndRestart()" aria-label="Acak ulang kartu">Acak ulang</button>
   </div>
 
-  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progress-track">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
 
-  <div class="card-wrap">
-    <div class="card" id="flashcard" onclick="flipCard()">
-      <span class="card-badge" id="card-badge">Kanji → Arti</span>
+  <div class="card-wrap" id="card-wrap">
+    <div class="card" id="flashcard" onclick="flipCard()" tabindex="0" role="button" aria-label="Kartu flashcard, klik untuk membalik">
+      <span class="card-badge" id="card-badge">Kanji &rarr; Arti</span>
       <span class="card-no" id="card-no">#1</span>
-      <div class="card-main" id="card-main"></div>
+      <div class="card-main" id="card-main" aria-live="polite"></div>
       <div class="card-sub" id="card-sub"></div>
-      <div class="card-answer" id="card-answer">
-        <div class="card-divider"></div>
+      <div class="card-answer" id="card-answer" aria-live="polite">
+        <div class="card-divider" aria-hidden="true"></div>
         <div id="answer-content"></div>
       </div>
-      <span class="flip-hint" id="flip-hint">klik untuk lihat jawaban · spasi</span>
+      <span class="flip-hint" id="flip-hint">klik untuk lihat jawaban &middot; spasi</span>
+      <span class="srs-badge" id="srs-badge"></span>
     </div>
   </div>
 
+  <div class="swipe-hint" id="swipe-hint">&#8592; Geser kiri = belum tahu &middot; Geser kanan = tahu &#8594;</div>
+
   <div class="rating-row" id="rating-row">
-    <button class="btn-rate btn-unknown" onclick="rate(false)">✕ Belum tahu</button>
-    <button class="btn-rate btn-know" onclick="rate(true)">✓ Tahu</button>
+    <button class="btn-rate btn-unknown" onclick="rate(false)" aria-label="Belum tahu">&#10005; Belum tahu</button>
+    <button class="btn-rate btn-know" onclick="rate(true)" aria-label="Tahu">&#10003; Tahu</button>
   </div>
 
-  <div class="keyboard-hints">
+  <div class="keyboard-hints" aria-hidden="true">
     <span class="kh"><kbd class="kbd">Space</kbd> balik kartu</span>
     <span class="kh"><kbd class="kbd">1</kbd> belum tahu</span>
     <span class="kh"><kbd class="kbd">2</kbd> tahu</span>
   </div>
 
-  <div class="stats-row">
-    <div class="stat-card stat-know"><div class="stat-num" id="stat-know">0</div><div class="stat-label">Tahu</div></div>
-    <div class="stat-card stat-unknown"><div class="stat-num" id="stat-unknown">0</div><div class="stat-label">Belum</div></div>
-    <div class="stat-card stat-left"><div class="stat-num" id="stat-left">0</div><div class="stat-label">Tersisa</div></div>
+  <div class="stats-row" aria-label="Statistik sesi">
+    <div class="stat-card stat-know"><div class="stat-num" id="stat-know" aria-label="Jumlah tahu">0</div><div class="stat-label">Tahu</div></div>
+    <div class="stat-card stat-unknown"><div class="stat-num" id="stat-unknown" aria-label="Jumlah belum tahu">0</div><div class="stat-label">Belum</div></div>
+    <div class="stat-card stat-left"><div class="stat-num" id="stat-left" aria-label="Jumlah tersisa">0</div><div class="stat-label">Tersisa</div></div>
   </div>
 
 </div>
 
+
 <!-- ═══════════════ RESULT SCREEN ═══════════════ -->
-<div id="screen-result" class="screen">
-  <div class="result-icon">完</div>
+<div id="screen-result" class="screen" role="region" aria-label="Hasil kuis">
+  <div class="result-icon" aria-hidden="true">完</div>
   <div>
     <h2 class="result-title">Sesi selesai!</h2>
-    <p class="result-sub" id="result-sub"></p>
+    <p class="result-sub" id="result-sub" aria-live="polite"></p>
   </div>
   <div class="result-big-stats">
     <div class="res-stat res-green"><div class="res-num" id="res-know">0</div><div class="res-label">Tahu</div></div>
     <div class="res-stat res-red"><div class="res-num" id="res-unknown">0</div><div class="res-label">Belum tahu</div></div>
   </div>
   <div class="result-actions">
-    <button class="btn btn-accent" onclick="retryUnknown()">Ulangi yang belum tahu →</button>
+    <button class="btn btn-accent" onclick="retryUnknown()">Ulangi yang belum tahu &rarr;</button>
     <button class="btn" onclick="retryAll()">Ulangi semua</button>
     <button class="btn" onclick="backToSelect()">Pilih kanji lain</button>
   </div>
 </div>
 
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
 <script>
+// ═══════════════ DATA (duplikasi dihapus, konsisten) ═══════════════
 const RAW=[
-[1,"山","やま","Gunung"],[2,"富士山","ふじさん","Gunung Fuji"],[3,"登山","とざん","Mendaki gunung"],[4,"火山","かざん","Gunung berapi"],[5,"川","かわ","Sungai"],[6,"川遊び","かわあそび","Bermain di sungai"],[7,"田舎","いなか","Desa"],[8,"日曜日","にちようび","Hari Minggu"],[9,"一月","いちがつ","Januari"],[10,"毎月","まいつき","Setiap bulan"],
-[11,"来月","らいげつ","Bulan depan"],[12,"お正月","おしょうがつ","Tahun baru"],[13,"現金","げんきん","Uang tunai"],[14,"お土産","おみやげ","Oleh-oleh"],[15,"調子","ちょうし","Kondisi"],[16,"女子","じょし","Perempuan"],[17,"様子","ようす","Keadaan"],[18,"火","ひ","Api"],[19,"火曜日","かようび","Selasa"],[20,"水","みず","Air"],
-[21,"水泳","すいえい","Berenang"],[22,"水曜日","すいようび","Rabu"],[23,"水道","すいどう","Saluran air"],[24,"木","き","Pohon"],[25,"木曜日","もくようび","Kamis"],[26,"金","かね","Uang"],[27,"お金","おかね","Uang"],[28,"金曜日","きんようび","Jumat"],[29,"土","つち","Tanah"],[30,"土地","とち","Tanah"],
-[31,"土曜日","どようび","Sabtu"],[32,"一","いち","Satu"],[33,"二","に","Dua"],[34,"三","さん","Tiga"],[35,"四","よん","Empat"],[36,"五","こ","Lima"],[37,"六","ろく","Enam"],[38,"七","なな","Tujuh"],[39,"八","はち","Delapan"],[40,"九","きゅう","Sembilan"],
-[41,"十","じゅう","Sepuluh"],[42,"百","ひゃく","Seratus"],[43,"千","せん","Seribu"],[44,"万","まん","Sepuluh ribu"],[45,"口","くち","Mulut"],[46,"人口","じんこう","Populasi"],[47,"入口","いりぐち","Pintu masuk"],[48,"出口","でぐち","Pintu keluar"],[49,"目","め","Mata"],[50,"耳","みみ","Telinga"],
-[51,"手","て","Tangan"],[52,"下手","へた","Tidak pandai"],[53,"足","あし","Kaki"],[54,"力","ちから","Tenaga"],[55,"月","つき","Bulan"],[56,"月曜日","げつようび","Senin"],[57,"今月","こんげつ","Bulan ini"],[58,"上","うえ","Atas"],[59,"下","した","Bawah"],[60,"左","ひだり","Kiri"],
-[61,"右","みぎ","Kanan"],[62,"中","なか","Tengah"],[63,"大","だい","Besar"],[64,"小","しょう","Kecil"],[65,"人","ひと","Orang"],[66,"日本人","にほんじん","Orang Jepang"],[67,"大人","おとな","Dewasa"],[68,"分","ふん","Menit"],[69,"三十分","さんじゅっぷん","30 menit"],[70,"半分","はんぶん","Setengah"],
-[71,"自分","じぶん","Diri sendiri"],[72,"中","なか","Dalam"],[73,"中国","ちゅうごく","China"],[74,"一日中","いちにちじゅう","Seharian"],[75,"国","くに","Negara"],[76,"外国","がいこく","Luar negeri"],[77,"国会","こっかい","Parlemen"],[78,"年","とし","Tahun"],[79,"来年","らいねん","Tahun depan"],[80,"今年","ことし","Tahun ini"],
-[81,"去年","きょねん","Tahun lalu"],[82,"生","せい","Hidup"],[83,"先生","せんせい","Guru"],[84,"生活","せいかつ","Kehidupan"],[85,"学生","がくせい","Siswa"],[86,"会","あう","Bertemu"],[87,"会話","かいわ","Percakapan"],[88,"会社","かいしゃ","Perusahaan"],[89,"見","みる","Melihat"],[90,"見学","けんがく","Studi banding"],
-[91,"見本","みほん","Contoh"],[92,"行","いく","Pergi"],[93,"銀行","ぎんこう","Bank"],[94,"旅行","りょこう","Wisata"],[95,"来","くる","Datang"],[96,"米","こめ","Beras"],[97,"中南米","ちゅうなんべい","Amerika Latin"],[98,"米国","べいこく","Amerika"],[99,"飲","のむ","Minum"],[100,"飲酒","いんしゅ","Minum alkohol"],
-[101,"飲料水","いんりょうすい","Air minum"],[102,"食","たべる","Makan"],[103,"食事","しょくじ","Makanan"],[104,"食堂","しょくどう","Kantin"],[105,"読","よむ","Membaca"],[106,"読書","どくしょ","Membaca buku"],[107,"句","く","Frasa"],[108,"書","かく","Menulis"],[109,"図書館","としょかん","Perpustakaan"],[110,"辞書","じしょ","Kamus"],
-[111,"一言","ひとこと","Sepatah kata"],[112,"言語","げんご","Bahasa"],[113,"話","はなす","Berbicara"],[114,"電話","でんわ","Telepon"],[115,"自ら","みずから","Diri sendiri"],[116,"自転車","じてんしゃ","Sepeda"],[117,"自由","じゅう","Bebas"],[118,"車","くるま","Mobil"],[119,"電車","でんしゃ","Kereta"],[120,"学","まなぶ","Belajar"],
-[121,"大学","だいがく","Universitas"],[122,"学校","がっこう","Sekolah"],[123,"校長","こうちょう","Kepala sekolah"],[124,"休","やすむ","Istirahat"],[125,"夏休み","なつやすみ","Libur musim panas"],[126,"休み","やすみ","Hari libur"],[127,"男の子","おとこのこ","Anak laki-laki"],[128,"男性","だんせい","Pria"],[129,"男の人","おとこのひと","Laki-laki"],[130,"長男","ちょうなん","Anak laki-laki pertama"],
-[131,"男子学生","だんしがくせい","Murid laki-laki"],[132,"林","はやし","Hutan"],[133,"森","もり","Hutan"],[134,"森林","しんりん","Hutan"],[135,"休む","やすむ","Beristirahat"],[136,"休み","やすみ","Libur"],[137,"昼休み","ひるやすみ","Istirahat siang"],[138,"休日","きゅうじつ","Hari libur"],[139,"定休日","ていきゅうび","Hari libur tetap"],[140,"体","からだ","Badan"],
-[141,"体操","たいそう","Senam"],[142,"大体","だいたい","Kira-kira"],[143,"住む","すむ","Tinggal"],[144,"住所","じゅうしょ","Alamat"],[145,"住まい","すまい","Tempat tinggal"],[146,"明るい","あかるい","Terang"],[147,"明日","あした","Besok"],[148,"説明","せつめい","Penjelasan"],[149,"明らか","あきらか","Jelas"],[150,"明後日","あさって","Lusa"],
-[151,"字","じ","Huruf"],[152,"漢字","かんじ","Huruf kanji"],[153,"数字","すうじ","Angka"],[154,"名字","みょうじ","Nama keluarga"],[155,"学生","がくせい","Murid"],[156,"学校","がっこう","Sekolah"],[157,"学習","がくしゅう","Belajar"],[158,"学ぶ","まなぶ","Belajar"],[159,"安い","やすい","Murah"],[160,"安心する","あんしんする","Lega"],
-[161,"安全な","あんぜんな","Aman"],[162,"不安な","ふあんな","Cemas"],[163,"好きな","すきな","Suka"],[164,"好み","このみ","Kesukaan"],[165,"お好み焼き","おこのみやき","Okonomiyaki"],[166,"毎日","まいにち","Setiap hari"],[167,"毎晩","まいばん","Setiap malam"],[168,"毎年","まいとし","Setiap tahun"],[169,"海","うみ","Laut"],[170,"海外","かいがい","Luar negeri"],
-[171,"駅","えき","Stasiun"],[172,"駅員","えきいん","Petugas stasiun"],[173,"駐車場","ちゅうしゃじょう","Tempat parkir"],[174,"試験","しけん","Ujian"],[175,"受験する","じゅけんする","Mengikuti ujian"],[176,"経験","けいけん","Pengalaman"],[177,"体験","たいけん","Pengalaman"],[178,"間","あいだ","Antara"],[179,"時間","じかん","Waktu"],[180,"間に合う","まにあう","Tepat waktu"],
-[181,"間違い","まちがい","Kesalahan"],[182,"人間","にんげん","Manusia"],[183,"聞く","きく","Mendengar"],[184,"聞こえる","きこえる","Terdengar"],[185,"新聞","しんぶん","Koran"],[186,"開く","あく","Terbuka"],[187,"開ける","あける","Membuka"],[188,"開店","かいてん","Buka toko"],[189,"開始","かいし","Mulai"],[190,"閉まる","しまる","Tertutup"],
-[191,"閉める","しめる","Menutup"],[192,"閉店","へいてん","Tutup toko"],[193,"問題","もんだい","Masalah"],[194,"質問する","しつもんする","Bertanya"],[195,"訪問する","ほうもんする","Mengunjungi"],[196,"問い合わせ","といあわせ","Pertanyaan"],[197,"大きい","おおきい","Besar"],[198,"大丈夫","だいじょうぶ","Tidak apa-apa"],[199,"大人","おとな","Orang dewasa"],[200,"大切な","たいせつな","Penting"],
-[201,"大変な","たいへんな","Berat"],[202,"小さい","ちいさい","Kecil"],[203,"小学生","しょうがくせい","Murid SD"],[204,"少し","すこし","Sedikit"],[205,"少ない","すくない","Sedikit"],[206,"多い","おおい","Banyak"],[207,"多分","たぶん","Mungkin"],[208,"高い","たかい","Tinggi/mahal"],[209,"高校","こうこう","SMA"],[210,"早い","はやい","Cepat"],
-[211,"古い","ふるい","Lama/tua"],[212,"長い","ながい","Panjang"],[213,"社長","しゃちょう","Direktur utama"],[214,"部長","ぶちょう","Kepala bagian"],[215,"元気な","げんきな","Sehat"],[216,"元日","がんじつ","Hari tahun baru"],[217,"地元","じもと","Lokal"],[218,"音楽","おんがく","Musik"],[219,"楽しい","たのしい","Menyenangkan"],[220,"楽な","らくな","Mudah"],
-[221,"正しい","ただしい","Benar"],[222,"お正月","おしょうがつ","Tahun baru"],[223,"東","ひがし","Timur"],[224,"東口","ひがしぐち","Pintu timur"],[225,"東京","とうきょう","Tokyo"],[226,"西","にし","Barat"],[227,"西口","にしぐち","Pintu barat"],[228,"南","みなみ","Selatan"],[229,"南口","みなみぐち","Pintu selatan"],[230,"北","きた","Utara"],
-[231,"北口","きたぐち","Pintu utara"],[232,"右","みぎ","Kanan"],[233,"右手","みぎて","Tangan kanan"],[234,"左","ひだり","Kiri"],[235,"左手","ひだりて","Tangan kiri"],[236,"前","まえ","Depan"],[237,"午前","ごぜん","Pagi/AM"],[238,"午前中","ごぜんちゅう","Pagi hari"],[239,"名前","なまえ","Nama"],[240,"後ろ","うしろ","Belakang"],
-[241,"後で","あとで","Nanti"],[242,"午後","ごご","Sore/PM"],[243,"最後","さいご","Terakhir"],[244,"外","そと","Luar"],[245,"外国","がいこく","Luar negeri"],[246,"知る","しる","Mengetahui"],[247,"知らせる","しらせる","Memberitahu"],[248,"知り合い","しりあい","Kenalan"],[249,"知識","ちしき","Pengetahuan"],[250,"歌","うた","Lagu"],
-[251,"歌う","うたう","Menyanyi"],[252,"歌手","かしゅ","Penyanyi"],[253,"国歌","こっか","Lagu kebangsaan"],[254,"青","あお","Biru"],[255,"青い","あおい","Biru"],[256,"青信号","あおしんごう","Lampu hijau"],[257,"赤","あか","Merah"],[258,"赤い","あかい","Merah"],[259,"赤ちゃん","あかちゃん","Bayi"],[260,"赤外線","せきがいせん","Sinar inframerah"],
-[261,"天気","てんき","Cuaca"],[262,"気持ち","きもち","Perasaan"],[263,"病気","びょうき","Sakit"],[264,"元気","げんき","Sehat"],[265,"空気","くうき","Udara"],[266,"話","はなし","Cerita"],[267,"話す","はなす","Berbicara"],[268,"会話","かいわ","Percakapan"],[269,"電話","てんわ","Telepon"],[270,"読む","よむ","Membaca"],
-[271,"読書","どくしょ","Membaca buku"],[272,"日本語","にほんご","Bahasa Jepang"],[273,"外国語","がいこくご","Bahasa asing"],[274,"単語","たんご","Kosakata"],[275,"持つ","もつ","Membawa"],[276,"お金持ち","おかねもち","Orang kaya"],[277,"待つ","まつ","Menunggu"],[278,"一時","いちじ","Jam 1"],[279,"時々","ときどき","Kadang-kadang"],[280,"時計","とけい","Jam"],
-[281,"時代","じだい","Zaman"],[282,"花見","はなみ","Melihat bunga"],[283,"花火","はなび","Kembang api"],[284,"お茶","おちゃ","Teh hijau"],[285,"紅茶","こうちゃ","Teh hitam"],[286,"薬","くすり","Obat"],[287,"薬屋","くすりや","Toko obat"],[288,"目薬","めぐすり","Obat mata"],[289,"野菜","やさい","Sayur"],[290,"洗う","あらう","Mencuci"],
-[291,"お手洗い","おてあらい","Kamar mandi"],[292,"注意する","ちゅういする","Memperhatikan"],[293,"注文する","ちゅうもんする","Memesan"],[294,"泣く","なく","Menangis"],[295,"浴びる","あびる","Mandi"],[296,"太平洋","たいへいよう","Pasifik"],[297,"大西洋","たいせいよう","Atlantik"],[298,"東洋","とうよう","Timur"],[299,"西洋","せいよう","Barat"],[300,"池","いけ","Kolam"],
-[301,"電池","でんち","Baterai"],[302,"地下","ちか","Bawah tanah"],[303,"地図","ちず","Peta"],[304,"地震","じしん","Gempa bumi"],[305,"姉","あね","Kakak perempuan"],[306,"姉妹","しまい","Saudara perempuan"],[307,"妹","いもうと","Adik perempuan"],[308,"止める","とめる","Menghentikan"],[309,"禁止する","きんしする","Melarang"],[310,"止む","やむ","Berhenti"],
-[311,"歩く","あるく","Berjalan"],[312,"散歩する","さんぽする","Jalan-jalan"],[313,"走る","はしる","Berlari"],[314,"起きる","おきる","Bangun"],[315,"起こる","おこる","Terjadi"],[316,"動かす","うごかす","Menggerakkan"],[317,"自動車","じどうしゃ","Mobil"],[318,"動物","どうぶつ","Hewan"],[319,"行動する","こうどうする","Bertindak"],[320,"働く","はたらく","Bekerja"],
-[321,"急に","きゅうに","Tiba-tiba"],[322,"急ぐ","いそぐ","Buru-buru"],[323,"思う","おもう","Berpikir"],[324,"思い出す","おもいだす","Teringat"],[325,"思い出","おもいで","Kenangan"],[326,"集める","あつめる","Mengumpulkan"],[327,"集まる","あつまる","Berkumpul"],[328,"進む","すすむ","Maju"],[329,"先進国","せんしんこく","Negara maju"],[330,"運ぶ","はこぶ","Mengangkut"],
-[331,"運動","うんどう","Olahraga"],[332,"通る","とおる","Melewati"],[333,"通う","かよう","Pulang pergi"],[334,"通学する","つうがくする","Sekolah"],[335,"押す","おす","Menekan"],[336,"借りる","かりる","Meminjam"],[337,"借家","しゃくや","Rumah sewaan"],[338,"売る","うる","Menjual"],[339,"売店","ばいてん","Toko"],[340,"自動販売機","じどうはんばいき","Vending machine"],
-[341,"帰る","かえる","Pulang"],[342,"帰国","きこく","Pulang ke negara"],[343,"終わり","おわり","Selesai"],[344,"終わる","おわる","Selesai"],[345,"始める","はじめる","Memulai"],[346,"始まる","はじまる","Mulai"],[347,"過去","かこ","Masa lalu"],[348,"死ぬ","しぬ","Mati"],[349,"遠い","とおい","Jauh"],[350,"遠く","とおく","Jauh"],
-[351,"近い","ちかい","Dekat"],[352,"近く","ちかく","Dekat"],[353,"近所","きんじょ","Tetangga"],[354,"重い","おもい","Berat"],[355,"体重","たいじゅう","Berat badan"],[356,"重要な","じゅうような","Penting"],[357,"軽い","かるい","Ringan"],[358,"温かい","あたたかい","Hangat"],[359,"温度","おんど","Suhu"],[360,"温泉","おんせん","Onsen"],
-[361,"冷たい","つめたい","Dingin (benda)"],[362,"冷える","ひえる","Dingin"],[363,"冷やす","ひやす","Dinginkan"],[364,"冷蔵庫","れいぞうこ","Kulkas"],[365,"熱い","あつい","Panas (benda)"],[366,"熱","ねつ","Demam"],[367,"暑い","あつい","Panas (cuaca)"],[368,"暑さ","あつさ","Panasnya"],[369,"寒い","さむい","Dingin (cuaca)"],[370,"寒さ","さむさ","Dinginnya"],
-[371,"暖かい","あたたかい","Hangat (cuaca)"],[372,"暖める","あたためる","Hangatkan"],[373,"特別な","とくべつな","Spesial"],[374,"特に","とくに","Terutama"],[375,"別れる","わかれる","Berpisah"],[376,"別の","べつの","Yang lain"],[377,"別々に","べつべつに","Pisah-pisah"],[378,"有名な","ゆうめいな","Terkenal"],[379,"便利な","べんりな","Praktis"],[380,"不便な","ふべんな","Tidak praktis"],
-[381,"郵便局","ゆうびんきょく","Kantor pos"],[382,"利用する","りようする","Gunakan"],[383,"低い","ひくい","Rendah"],[384,"低温","ていおん","Suhu rendah"],[385,"広い","ひろい","Luas"],[386,"広さ","ひろさ","Luasnya"],[387,"広島","ひろしま","Hiroshima"],[388,"最良","さいりょう","Terbaik"],[389,"悪い","わるい","Buruk"],[390,"悪口","わるくち","Gunjingan"],
-[391,"変わる","かわる","Berubah"],[392,"変える","かえる","Mengubah"],[393,"変な","へんな","Aneh"],[394,"変化する","へんかする","Berubah"],[395,"使う","つかう","Gunakan"],[396,"大使館","たいしかん","Kedutaan"],[397,"作る","つくる","Membuat"],[398,"作文","さくぶん","Karangan"],[399,"作業","さぎょう","Pengerjaan"],[400,"今","いま","Sekarang"],
-[401,"会社","かいしゃ","Perusahaan"],[402,"曇","くも","Awan"],[403,"電気","でんき","Listrik"],[404,"電車","でんしゃ","Kereta"],[405,"電子レンジ","でんしレンジ","Microwave"],[406,"雪","ゆき","Salju"],[407,"雪国","ゆきぐに","Negara salju"],[408,"料理","りょうり","Masakan"],[409,"料金","りょうきん","Biaya"],[410,"教科書","きょうかしょ","Buku pelajaran"],
-[411,"内科","ないか","Penyakit dalam"],[412,"お腹","おなか","Perut"],[413,"空腹","くうふく","Lapar"],[414,"腹が立つ","はらがたつ","Marah"],[415,"豚","ぶた","Babi"],[416,"豚肉","ぶたにく","Daging babi"],[417,"説明する","せつめいする","Jelaskan"],[418,"小説","しょうせつ","Novel"],[419,"計画する","けいかくする","Rencana"],[420,"痛い","いたい","Sakit"],
-[421,"痛む","いたむ","Sakit"],[422,"頭痛","ずつう","Sakit kepala"],[423,"送る","おくる","Kirim"],[424,"放送","ほうそう","Siaran"],[425,"返事","へんじ","Jawaban"],[426,"返す","かえす","Kembalikan"],[427,"道","みち","Jalan"],[428,"道具","どうぐ","Alat"],[429,"今週","こんしゅう","Minggu ini"],[430,"来週","らいしゅう","Minggu depan"],
-[431,"先週","せんしゅう","Minggu lalu"],[432,"毎週","まいしゅう","Setiap minggu"],[433,"一週間","いっしゅうかん","Seminggu"],[434,"映画","えいが","Film"],[435,"映る","うつる","Pantul"],[436,"映す","うつす","Pantulkan"],[437,"写真","しゃしん","Foto"],[438,"真夜中","まよなか","Tengah malam"],[439,"真ん中","まんなか","Tengah"],[440,"旅","たび","Perjalanan"],
-[441,"旅行する","りょこうする","Wisata"],[442,"旅館","りょかん","Ryokan"],[443,"旅費","りょひ","Biaya jalan"],[444,"世界","せかい","Dunia"],[445,"世話","せわ","Merawat"],[446,"世代","せだい","Generasi"],[447,"限界","げんかい","Batas"],[448,"仕事","しごと","Pekerjaan"],[449,"仕方","しかた","Cara"],[450,"食事","しょくじ","Makan"],
-[451,"用事","ようじ","Keperluan"],[452,"事故","じこ","Kecelakaan"],[453,"大事な","だいじな","Penting"],[454,"銀","ぎん","Perak"],[455,"銀行","ぎんこう","Bank"],[456,"銀色","ぎんいろ","Warna perak"],[457,"医者","いしゃ","Dokter"],[458,"医学","いがく","Kedokteran"],[459,"若者","わかもの","Anak muda"],[460,"科学者","かがくしゃ","Ilmuwan"],
-[461,"本屋","ほんや","Toko buku"],[462,"花屋","はなや","Toko bunga"],[463,"部屋","へや","Kamar"],[464,"産業","さんぎょう","Industri"],[465,"生産する","せいさんする","Produksi"],[466,"農業","のうぎょう","Tani"],[467,"卒業","そつぎょう","Lulus"],[468,"職業","しょくぎょう","Profesi"],[469,"乗る","のる","Naik"],[470,"乗客","じょうきゃく","Penumpang"],
-[471,"降りる","おりる","Turun"],[472,"降る","ふる","Turun (hujan)"],[473,"自転車","じてんしゃ","Sepeda"],[474,"運転","うんてん","Setir"],[475,"出発する","しゅっぱつする","Berangkat"],[476,"発売","はつばい","Jual"],[477,"発明する","はつめいする","Menemukan"],[478,"発音","はつおん","Pelafalan"],[479,"着く","つく","Tiba"],[480,"着る","きる","Memakai"],
-[481,"着物","きもの","Kimono"],[482,"到着","とうちゃく","Datang"],[483,"春","はる","Semi"],[484,"夏","なつ","Panas"],[485,"秋風","あきかぜ","Angin gugur"],[486,"冬","ふゆ","Dingin"],[487,"空","そら","Langit"],[488,"空港","くうこう","Bandara"],[489,"光る","ひかる","Sinar"],[490,"日光","にっこう","Matahari"],
-[491,"台風","たいふう","Topan"],[492,"台所","だいどころ","Dapur"],[493,"風","かぜ","Angin"],[494,"風呂","ふろ","Mandi"],[495,"風邪","かぜ","Pilek"],[496,"季節","きせつ","Musim"],[497,"四季","しき","4 musim"],[498,"朝","あさ","Pagi"],[499,"朝ごはん","あさごはん","Sarapan"],[500,"昼","ひる","Siang"],
-[501,"夜","よる","Malam"],[502,"今夜","こんや","Malam ini"],[503,"方","かた","Cara"],[504,"夕方","ゆうがた","Sore"],[505,"方法","ほうほう","Cara"],[506,"晩ご飯","ばんごはん","Makan malam"],[507,"以上","いじょう","Lebih"],[508,"以下","いか","Kurang"],[509,"一度","いちど","1 kali"],[510,"今度","こんど","Lain kali"],
-[511,"未来","みらい","Masa depan"],[512,"頭","あたま","Kepala"],[513,"顔","かお","Wajah"],[514,"笑顔","えがお","Senyum"],[515,"声","こえ","Suara"],[516,"内","うち","Dalam"],[517,"家族","かぞく","Keluarga"],[518,"家事","かじ","Pekerjaan rumah"],[519,"私","わたし","Saya"],[520,"自信","じしん","Percaya diri"],
-[521,"兄","あに","Kakak laki-laki"],[522,"弟","おとうと","Adik laki-laki"],[523,"妻","つま","Istri"],[524,"有名","ゆうめい","Terkenal"],[525,"理由","りゆう","Alasan"],[526,"野球","やきゅう","Bisbol"],[527,"ご飯","ごはん","Nasi"],[528,"味","あじ","Rasa"],[529,"意味","いみ","Arti"],[530,"趣味","しゅみ","Hobi"],
-[531,"店","みせ","Toko"],[532,"国","くに","Negara"],[533,"所","ところ","Tempat"],[534,"場所","ばしょ","Tempat"],[535,"都会","とかい","Kota"],[536,"市","し","Kota"],[537,"町","まち","Kota"],[538,"村","むら","Desa"],[539,"番号","ばんごう","Nomor"],[540,"信号","しんごう","Lampu lalu lintas"],
-[541,"工場","こうじょう","Pabrik"],[542,"病院","びょういん","Rumah sakit"],[543,"映画館","えいがかん","Bioskop"],[544,"文字","もじ","Huruf"],[545,"教える","おしえる","Mengajar"],[546,"勉強","べんきょう","Belajar"],[547,"英語","えいご","Bahasa Inggris"],[548,"宿題","しゅくだい","PR"],[549,"試合","しあい","Pertandingan"],[550,"答え","こたえ","Jawab"],
-[551,"用意","ようい","Siap"],[552,"意見","いけん","Pendapat"],[553,"紙","かみ","Kertas"],[554,"手紙","てがみ","Surat"],[555,"生活","せいかつ","Hidup"],[556,"色","いろ","Warna"],[557,"同じ","おなじ","Sama"]
+[1,"山","やま","Gunung","alam"],[2,"富士山","ふじさん","Gunung Fuji","alam"],[3,"登山","とざん","Mendaki gunung","alam"],[4,"火山","かざん","Gunung berapi","alam"],[5,"川","かわ","Sungai","alam"],[6,"川遊び","かわあそび","Bermain di sungai","alam"],[7,"田舎","いなか","Desa","tempat"],
+[8,"日曜日","にちようび","Hari Minggu","waktu"],[9,"一月","いちがつ","Januari","waktu"],[10,"毎月","まいつき","Setiap bulan","waktu"],[11,"来月","らいげつ","Bulan depan","waktu"],[12,"お正月","おしょうがつ","Tahun baru","waktu"],[13,"現金","げんきん","Uang tunai","kehidupan"],[14,"お土産","おみやげ","Oleh-oleh","kehidupan"],
+[15,"調子","ちょうし","Kondisi","kehidupan"],[16,"女子","じょし","Perempuan","orang"],[17,"様子","ようす","Keadaan","kehidupan"],[18,"火","ひ","Api","alam"],[19,"火曜日","かようび","Selasa","waktu"],[20,"水","みず","Air","alam"],[21,"水泳","すいえい","Berenang","aktivitas"],
+[22,"水曜日","すいようび","Rabu","waktu"],[23,"水道","すいどう","Saluran air","kehidupan"],[24,"木","き","Pohon","alam"],[25,"木曜日","もくようび","Kamis","waktu"],[26,"金","かね","Uang","kehidupan"],[27,"お金","おかね","Uang (sopan)","kehidupan"],[28,"金曜日","きんようび","Jumat","waktu"],
+[29,"土","つち","Tanah","alam"],[30,"土地","とち","Lahan","tempat"],[31,"土曜日","どようび","Sabtu","waktu"],[32,"一","いち","Satu","angka"],[33,"二","に","Dua","angka"],[34,"三","さん","Tiga","angka"],[35,"四","よん","Empat","angka"],
+[36,"五","ご","Lima","angka"],[37,"六","ろく","Enam","angka"],[38,"七","なな","Tujuh","angka"],[39,"八","はち","Delapan","angka"],[40,"九","きゅう","Sembilan","angka"],[41,"十","じゅう","Sepuluh","angka"],[42,"百","ひゃく","Seratus","angka"],
+[43,"千","せん","Seribu","angka"],[44,"万","まん","Sepuluh ribu","angka"],[45,"口","くち","Mulut","tubuh"],[46,"人口","じんこう","Populasi","kehidupan"],[47,"入口","いりぐち","Pintu masuk","tempat"],[48,"出口","でぐち","Pintu keluar","tempat"],[49,"目","め","Mata","tubuh"],[50,"耳","みみ","Telinga","tubuh"],
+
+[51,"手","て","Tangan","tubuh"],[52,"下手","へた","Tidak pandai","sifat"],[53,"足","あし","Kaki","tubuh"],[54,"力","ちから","Tenaga","tubuh"],[55,"月","つき","Bulan","waktu"],[56,"月曜日","げつようび","Senin","waktu"],[57,"今月","こんげつ","Bulan ini","waktu"],
+[58,"上","うえ","Atas","posisi"],[59,"下","した","Bawah","posisi"],[60,"左","ひだり","Kiri","posisi"],[61,"右","みぎ","Kanan","posisi"],[62,"中","なか","Tengah/Dalam","posisi"],[63,"大","だい","Besar","sifat"],[64,"小","しょう","Kecil","sifat"],
+[65,"人","ひと","Orang","orang"],[66,"日本人","にほんじん","Orang Jepang","orang"],[67,"大人","おとな","Dewasa","orang"],[68,"分","ふん","Menit","waktu"],[69,"三十分","さんじゅっぷん","30 menit","waktu"],[70,"半分","はんぶん","Setengah","angka"],[71,"自分","じぶん","Diri sendiri","orang"],
+[72,"中国","ちゅうごく","China","tempat"],[73,"一日中","いちにちじゅう","Seharian","waktu"],[74,"国","くに","Negara","tempat"],[75,"外国","がいこく","Luar negeri","tempat"],[76,"国会","こっかい","Parlemen","kehidupan"],[77,"年","とし","Tahun","waktu"],[78,"来年","らいねん","Tahun depan","waktu"],
+[79,"今年","ことし","Tahun ini","waktu"],[80,"去年","きょねん","Tahun lalu","waktu"],[81,"生","せい","Hidup","kehidupan"],[82,"先生","せんせい","Guru","orang"],[83,"生活","せいかつ","Kehidupan","kehidupan"],[84,"学生","がくせい","Siswa","orang"],[85,"会う","あう","Bertemu","aktivitas"],
+[86,"会話","かいわ","Percakapan","aktivitas"],[87,"会社","かいしゃ","Perusahaan","tempat"],[88,"見る","みる","Melihat","aktivitas"],[89,"見学","けんがく","Studi banding","pendidikan"],[90,"見本","みほん","Contoh","kehidupan"],[91,"行く","いく","Pergi","aktivitas"],[92,"銀行","ぎんこう","Bank","tempat"],
+[93,"旅行","りょこう","Wisata","aktivitas"],[94,"来る","くる","Datang","aktivitas"],[95,"米","こめ","Beras","kehidupan"],[96,"中南米","ちゅうなんべい","Amerika Latin","tempat"],[97,"米国","べいこく","Amerika","tempat"],[98,"飲む","のむ","Minum","aktivitas"],[99,"飲酒","いんしゅ","Minum alkohol","aktivitas"],
+[100,"飲料水","いんりょうすい","Air minum","kehidupan"],[101,"食べる","たべる","Makan","aktivitas"],[102,"食事","しょくじ","Makanan","kehidupan"],[103,"食堂","しょくどう","Kantin","tempat"],[104,"読む","よむ","Membaca","aktivitas"],[105,"読書","どくしょ","Membaca buku","aktivitas"],[106,"句","く","Frasa","pendidikan"],
+[107,"書く","かく","Menulis","aktivitas"],[108,"図書館","としょかん","Perpustakaan","tempat"],[109,"辞書","じしょ","Kamus","pendidikan"],[110,"一言","ひとこと","Sepatah kata","kehidupan"],[111,"言語","げんご","Bahasa","pendidikan"],[112,"話す","はなす","Berbicara","aktivitas"],[113,"電話","でんわ","Telepon","kehidupan"],
+[114,"自ら","みずから","Diri sendiri","orang"],[115,"自転車","じてんしゃ","Sepeda","transportasi"],[116,"自由","じゆう","Bebas","sifat"],[117,"車","くるま","Mobil","transportasi"],[118,"電車","でんしゃ","Kereta","transportasi"],[119,"学ぶ","まなぶ","Belajar","pendidikan"],[120,"大学","だいがく","Universitas","pendidikan"],
+
+[121,"学校","がっこう","Sekolah","pendidikan"],[122,"校長","こうちょう","Kepala sekolah","orang"],[123,"休む","やすむ","Istirahat","aktivitas"],[124,"夏休み","なつやすみ","Libur musim panas","waktu"],[125,"休み","やすみ","Hari libur","waktu"],[126,"男の子","おとこのこ","Anak laki-laki","orang"],[127,"男性","だんせい","Pria","orang"],
+[128,"男の人","おとこのひと","Laki-laki","orang"],[129,"長男","ちょうなん","Anak pertama (L)","orang"],[130,"男子学生","だんしがくせい","Murid laki-laki","orang"],[131,"林","はやし","Hutan kecil","alam"],[132,"森","もり","Hutan lebat","alam"],[133,"森林","しんりん","Hutan","alam"],[134,"昼休み","ひるやすみ","Istirahat siang","waktu"],
+[135,"休日","きゅうじつ","Hari libur","waktu"],[136,"定休日","ていきゅうび","Hari libur tetap","waktu"],[137,"体","からだ","Badan","tubuh"],[138,"体操","たいそう","Senam","aktivitas"],[139,"大体","だいたい","Kira-kira","sifat"],[140,"住む","すむ","Tinggal","aktivitas"],[141,"住所","じゅうしょ","Alamat","tempat"],
+[142,"住まい","すまい","Tempat tinggal","tempat"],[143,"明るい","あかるい","Terang","sifat"],[144,"明日","あした","Besok","waktu"],[145,"説明","せつめい","Penjelasan","kehidupan"],[146,"明らか","あきらか","Jelas","sifat"],[147,"明後日","あさって","Lusa","waktu"],[148,"字","じ","Huruf","pendidikan"],
+[149,"漢字","かんじ","Huruf kanji","pendidikan"],[150,"数字","すうじ","Angka","pendidikan"],[151,"名字","みょうじ","Nama keluarga","orang"],[152,"学習","がくしゅう","Belajar","pendidikan"],[153,"安い","やすい","Murah","sifat"],[154,"安心する","あんしんする","Lega","sifat"],[155,"安全な","あんぜんな","Aman","sifat"],
+[156,"不安な","ふあんな","Cemas","sifat"],[157,"好きな","すきな","Suka","sifat"],[158,"好み","このみ","Kesukaan","kehidupan"],[159,"お好み焼き","おこのみやき","Okonomiyaki","kehidupan"],[160,"毎日","まいにち","Setiap hari","waktu"],[161,"毎晩","まいばん","Setiap malam","waktu"],[162,"毎年","まいとし","Setiap tahun","waktu"],
+[163,"海","うみ","Laut","alam"],[164,"海外","かいがい","Luar negeri","tempat"],[165,"駅","えき","Stasiun","transportasi"],[166,"駅員","えきいん","Petugas stasiun","orang"],[167,"駐車場","ちゅうしゃじょう","Tempat parkir","tempat"],[168,"試験","しけん","Ujian","pendidikan"],[169,"受験する","じゅけんする","Mengikuti ujian","pendidikan"],
+[170,"経験","けいけん","Pengalaman","kehidupan"],[171,"体験","たいけん","Pengalaman langsung","kehidupan"],[172,"間","あいだ","Antara","posisi"],[173,"時間","じかん","Waktu","waktu"],[174,"間に合う","まにあう","Tepat waktu","waktu"],[175,"間違い","まちがい","Kesalahan","kehidupan"],[176,"人間","にんげん","Manusia","orang"],
+[177,"聞く","きく","Mendengar","aktivitas"],[178,"聞こえる","きこえる","Terdengar","aktivitas"],[179,"新聞","しんぶん","Koran","kehidupan"],[180,"開く","あく","Terbuka","aktivitas"],[181,"開ける","あける","Membuka","aktivitas"],[182,"開店","かいてん","Buka toko","kehidupan"],[183,"開始","かいし","Mulai","aktivitas"],
+[184,"閉まる","しまる","Tertutup","aktivitas"],[185,"閉める","しめる","Menutup","aktivitas"],[186,"閉店","へいてん","Tutup toko","kehidupan"],[187,"問題","もんだい","Masalah","kehidupan"],[188,"質問する","しつもんする","Bertanya","aktivitas"],[189,"訪問する","ほうもんする","Mengunjungi","aktivitas"],[190,"問い合わせ","といあわせ","Pertanyaan","kehidupan"],
+
+[191,"大きい","おおきい","Besar","sifat"],[192,"大丈夫","だいじょうぶ","Tidak apa-apa","sifat"],[193,"大人","おとな","Orang dewasa","orang"],[194,"大切な","たいせつな","Penting","sifat"],[195,"大変な","たいへんな","Berat/Sulit","sifat"],[196,"小さい","ちいさい","Kecil","sifat"],[197,"小学生","しょうがくせい","Murid SD","orang"],
+[198,"少し","すこし","Sedikit","sifat"],[199,"少ない","すくない","Sedikit (jumlah)","sifat"],[200,"多い","おおい","Banyak","sifat"],[201,"多分","たぶん","Mungkin","sifat"],[202,"高い","たかい","Tinggi/Mahal","sifat"],[203,"高校","こうこう","SMA","pendidikan"],[204,"早い","はやい","Cepat/Pagi","sifat"],
+[205,"古い","ふるい","Lama/Tua","sifat"],[206,"長い","ながい","Panjang","sifat"],[207,"社長","しゃちょう","Direktur utama","orang"],[208,"部長","ぶちょう","Kepala bagian","orang"],[209,"元気な","げんきな","Sehat","sifat"],[210,"元日","がんじつ","Hari tahun baru","waktu"],[211,"地元","じもと","Lokal","tempat"],
+[212,"音楽","おんがく","Musik","kehidupan"],[213,"楽しい","たのしい","Menyenangkan","sifat"],[214,"楽な","らくな","Mudah","sifat"],[215,"正しい","ただしい","Benar","sifat"],[216,"東","ひがし","Timur","posisi"],[217,"東口","ひがしぐち","Pintu timur","tempat"],[218,"東京","とうきょう","Tokyo","tempat"],
+[219,"西","にし","Barat","posisi"],[220,"西口","にしぐち","Pintu barat","tempat"],[221,"南","みなみ","Selatan","posisi"],[222,"南口","みなみぐち","Pintu selatan","tempat"],[223,"北","きた","Utara","posisi"],[224,"北口","きたぐち","Pintu utara","tempat"],[225,"右手","みぎて","Tangan kanan","tubuh"],
+[226,"左手","ひだりて","Tangan kiri","tubuh"],[227,"前","まえ","Depan","posisi"],[228,"午前","ごぜん","Pagi/AM","waktu"],[229,"午前中","ごぜんちゅう","Pagi hari","waktu"],[230,"名前","なまえ","Nama","orang"],[231,"後ろ","うしろ","Belakang","posisi"],[232,"後で","あとで","Nanti","waktu"],
+[233,"午後","ごご","Sore/PM","waktu"],[234,"最後","さいご","Terakhir","posisi"],[235,"外","そと","Luar","posisi"],[236,"知る","しる","Mengetahui","aktivitas"],[237,"知らせる","しらせる","Memberitahu","aktivitas"],[238,"知り合い","しりあい","Kenalan","orang"],[239,"知識","ちしき","Pengetahuan","pendidikan"],
+[240,"歌","うた","Lagu","kehidupan"],[241,"歌う","うたう","Menyanyi","aktivitas"],[242,"歌手","かしゅ","Penyanyi","orang"],[243,"国歌","こっか","Lagu kebangsaan","kehidupan"],[244,"青","あお","Biru","sifat"],[245,"青い","あおい","Biru (adj)","sifat"],[246,"青信号","あおしんごう","Lampu hijau","kehidupan"],
+[247,"赤","あか","Merah","sifat"],[248,"赤い","あかい","Merah (adj)","sifat"],[249,"赤ちゃん","あかちゃん","Bayi","orang"],[250,"赤外線","せきがいせん","Inframerah","kehidupan"],
+
+[251,"天気","てんき","Cuaca","alam"],[252,"気持ち","きもち","Perasaan","kehidupan"],[253,"病気","びょうき","Sakit","kehidupan"],[254,"元気","げんき","Sehat","sifat"],[255,"空気","くうき","Udara","alam"],[256,"話","はなし","Cerita","kehidupan"],[257,"会話","かいわ","Percakapan","aktivitas"],
+[258,"日本語","にほんご","Bahasa Jepang","pendidikan"],[259,"外国語","がいこくご","Bahasa asing","pendidikan"],[260,"単語","たんご","Kosakata","pendidikan"],[261,"持つ","もつ","Membawa","aktivitas"],[262,"お金持ち","おかねもち","Orang kaya","orang"],[263,"待つ","まつ","Menunggu","aktivitas"],[264,"一時","いちじ","Jam 1","waktu"],
+[265,"時々","ときどき","Kadang-kadang","waktu"],[266,"時計","とけい","Jam (alat)","kehidupan"],[267,"時代","じだい","Zaman","waktu"],[268,"花見","はなみ","Melihat bunga","aktivitas"],[269,"花火","はなび","Kembang api","kehidupan"],[270,"お茶","おちゃ","Teh hijau","kehidupan"],[271,"紅茶","こうちゃ","Teh hitam","kehidupan"],
+[272,"薬","くすり","Obat","kehidupan"],[273,"薬屋","くすりや","Toko obat","tempat"],[274,"目薬","めぐすり","Obat mata","kehidupan"],[275,"野菜","やさい","Sayur","kehidupan"],[276,"洗う","あらう","Mencuci","aktivitas"],[277,"お手洗い","おてあらい","Kamar mandi","tempat"],[278,"注意する","ちゅういする","Memperhatikan","aktivitas"],
+[279,"注文する","ちゅうもんする","Memesan","aktivitas"],[280,"泣く","なく","Menangis","aktivitas"],[281,"浴びる","あびる","Mandi","aktivitas"],[282,"太平洋","たいへいよう","Pasifik","tempat"],[283,"大西洋","たいせいよう","Atlantik","tempat"],[284,"東洋","とうよう","Timur (dunia)","tempat"],[285,"西洋","せいよう","Barat (dunia)","tempat"],
+[286,"池","いけ","Kolam","alam"],[287,"電池","でんち","Baterai","kehidupan"],[288,"地下","ちか","Bawah tanah","tempat"],[289,"地図","ちず","Peta","kehidupan"],[290,"地震","じしん","Gempa bumi","alam"],[291,"姉","あね","Kakak perempuan","orang"],[292,"姉妹","しまい","Saudara perempuan","orang"],
+[293,"妹","いもうと","Adik perempuan","orang"],[294,"止める","とめる","Menghentikan","aktivitas"],[295,"禁止する","きんしする","Melarang","aktivitas"],[296,"止む","やむ","Berhenti","aktivitas"],[297,"歩く","あるく","Berjalan","aktivitas"],[298,"散歩する","さんぽする","Jalan-jalan","aktivitas"],[299,"走る","はしる","Berlari","aktivitas"],
+[300,"起きる","おきる","Bangun","aktivitas"],[301,"起こる","おこる","Terjadi","aktivitas"],[302,"動かす","うごかす","Menggerakkan","aktivitas"],[303,"自動車","じどうしゃ","Mobil (formal)","transportasi"],[304,"動物","どうぶつ","Hewan","alam"],[305,"行動する","こうどうする","Bertindak","aktivitas"],[306,"働く","はたらく","Bekerja","aktivitas"],
+[307,"急に","きゅうに","Tiba-tiba","sifat"],[308,"急ぐ","いそぐ","Buru-buru","aktivitas"],[309,"思う","おもう","Berpikir","aktivitas"],[310,"思い出す","おもいだす","Teringat","aktivitas"],[311,"思い出","おもいで","Kenangan","kehidupan"],[312,"集める","あつめる","Mengumpulkan","aktivitas"],[313,"集まる","あつまる","Berkumpul","aktivitas"],
+
+[314,"進む","すすむ","Maju","aktivitas"],[315,"先進国","せんしんこく","Negara maju","tempat"],[316,"運ぶ","はこぶ","Mengangkut","aktivitas"],[317,"運動","うんどう","Olahraga","aktivitas"],[318,"通る","とおる","Melewati","aktivitas"],[319,"通う","かよう","Pulang pergi","aktivitas"],[320,"通学する","つうがくする","Pergi sekolah","aktivitas"],
+[321,"押す","おす","Menekan","aktivitas"],[322,"借りる","かりる","Meminjam","aktivitas"],[323,"借家","しゃくや","Rumah sewaan","tempat"],[324,"売る","うる","Menjual","aktivitas"],[325,"売店","ばいてん","Kios","tempat"],[326,"自動販売機","じどうはんばいき","Vending machine","kehidupan"],[327,"帰る","かえる","Pulang","aktivitas"],
+[328,"帰国","きこく","Pulang ke negara","aktivitas"],[329,"終わる","おわる","Selesai","aktivitas"],[330,"始める","はじめる","Memulai","aktivitas"],[331,"始まる","はじまる","Dimulai","aktivitas"],[332,"過去","かこ","Masa lalu","waktu"],[333,"死ぬ","しぬ","Mati","kehidupan"],[334,"遠い","とおい","Jauh","sifat"],
+[335,"遠く","とおく","Kejauhan","sifat"],[336,"近い","ちかい","Dekat","sifat"],[337,"近く","ちかく","Dekat (tempat)","posisi"],[338,"近所","きんじょ","Tetangga","tempat"],[339,"重い","おもい","Berat","sifat"],[340,"体重","たいじゅう","Berat badan","tubuh"],[341,"重要な","じゅうような","Penting","sifat"],
+[342,"軽い","かるい","Ringan","sifat"],[343,"温かい","あたたかい","Hangat","sifat"],[344,"温度","おんど","Suhu","alam"],[345,"温泉","おんせん","Onsen","tempat"],[346,"冷たい","つめたい","Dingin (benda)","sifat"],[347,"冷える","ひえる","Menjadi dingin","sifat"],[348,"冷やす","ひやす","Mendinginkan","aktivitas"],
+[349,"冷蔵庫","れいぞうこ","Kulkas","kehidupan"],[350,"熱い","あつい","Panas (benda)","sifat"],[351,"熱","ねつ","Demam","kehidupan"],[352,"暑い","あつい","Panas (cuaca)","alam"],[353,"暑さ","あつさ","Panasnya","alam"],[354,"寒い","さむい","Dingin (cuaca)","alam"],[355,"寒さ","さむさ","Dinginnya","alam"],
+[356,"暖かい","あたたかい","Hangat (cuaca)","alam"],[357,"暖める","あたためる","Menghangatkan","aktivitas"],[358,"特別な","とくべつな","Spesial","sifat"],[359,"特に","とくに","Terutama","sifat"],[360,"別れる","わかれる","Berpisah","aktivitas"],[361,"別の","べつの","Yang lain","sifat"],[362,"別々に","べつべつに","Terpisah","sifat"],
+[363,"有名な","ゆうめいな","Terkenal","sifat"],[364,"便利な","べんりな","Praktis","sifat"],[365,"不便な","ふべんな","Tidak praktis","sifat"],[366,"郵便局","ゆうびんきょく","Kantor pos","tempat"],[367,"利用する","りようする","Menggunakan","aktivitas"],[368,"低い","ひくい","Rendah","sifat"],[369,"低温","ていおん","Suhu rendah","alam"],
+[370,"広い","ひろい","Luas","sifat"],[371,"広さ","ひろさ","Luasnya","sifat"],[372,"広島","ひろしま","Hiroshima","tempat"],[373,"最良","さいりょう","Terbaik","sifat"],[374,"悪い","わるい","Buruk","sifat"],[375,"悪口","わるくち","Gunjingan","kehidupan"],[376,"変わる","かわる","Berubah","aktivitas"],
+[377,"変える","かえる","Mengubah","aktivitas"],[378,"変な","へんな","Aneh","sifat"],[379,"変化する","へんかする","Berubah (formal)","aktivitas"],[380,"使う","つかう","Menggunakan","aktivitas"],[381,"大使館","たいしかん","Kedutaan","tempat"],[382,"作る","つくる","Membuat","aktivitas"],[383,"作文","さくぶん","Karangan","pendidikan"],
+[384,"作業","さぎょう","Pekerjaan","aktivitas"],[385,"今","いま","Sekarang","waktu"],[386,"曇り","くもり","Berawan","alam"],[387,"電気","でんき","Listrik","kehidupan"],[388,"電子レンジ","でんしレンジ","Microwave","kehidupan"],[389,"雪","ゆき","Salju","alam"],[390,"雪国","ゆきぐに","Negara salju","tempat"],
+
+[391,"料理","りょうり","Masakan","kehidupan"],[392,"料金","りょうきん","Biaya","kehidupan"],[393,"教科書","きょうかしょ","Buku pelajaran","pendidikan"],[394,"内科","ないか","Penyakit dalam","kehidupan"],[395,"お腹","おなか","Perut","tubuh"],[396,"空腹","くうふく","Lapar","kehidupan"],[397,"腹が立つ","はらがたつ","Marah","sifat"],
+[398,"痛い","いたい","Sakit","sifat"],[399,"痛む","いたむ","Terasa sakit","sifat"],[400,"頭痛","ずつう","Sakit kepala","kehidupan"],[401,"送る","おくる","Mengirim","aktivitas"],[402,"放送","ほうそう","Siaran","kehidupan"],[403,"返事","へんじ","Jawaban","kehidupan"],[404,"返す","かえす","Mengembalikan","aktivitas"],
+[405,"道","みち","Jalan","tempat"],[406,"道具","どうぐ","Alat","kehidupan"],[407,"今週","こんしゅう","Minggu ini","waktu"],[408,"来週","らいしゅう","Minggu depan","waktu"],[409,"先週","せんしゅう","Minggu lalu","waktu"],[410,"毎週","まいしゅう","Setiap minggu","waktu"],[411,"一週間","いっしゅうかん","Seminggu","waktu"],
+[412,"映画","えいが","Film","kehidupan"],[413,"映る","うつる","Terpantul","aktivitas"],[414,"写真","しゃしん","Foto","kehidupan"],[415,"真夜中","まよなか","Tengah malam","waktu"],[416,"真ん中","まんなか","Tengah-tengah","posisi"],[417,"旅","たび","Perjalanan","aktivitas"],[418,"旅行する","りょこうする","Berwisata","aktivitas"],
+[419,"旅館","りょかん","Ryokan","tempat"],[420,"旅費","りょひ","Biaya perjalanan","kehidupan"],[421,"世界","せかい","Dunia","tempat"],[422,"世話","せわ","Merawat","aktivitas"],[423,"世代","せだい","Generasi","kehidupan"],[424,"限界","げんかい","Batas","kehidupan"],[425,"仕事","しごと","Pekerjaan","aktivitas"],
+[426,"仕方","しかた","Cara","kehidupan"],[427,"用事","ようじ","Keperluan","kehidupan"],[428,"事故","じこ","Kecelakaan","kehidupan"],[429,"大事な","だいじな","Penting","sifat"],[430,"銀","ぎん","Perak","kehidupan"],[431,"銀色","ぎんいろ","Warna perak","sifat"],[432,"医者","いしゃ","Dokter","orang"],
+[433,"医学","いがく","Kedokteran","pendidikan"],[434,"若者","わかもの","Anak muda","orang"],[435,"科学者","かがくしゃ","Ilmuwan","orang"],[436,"本屋","ほんや","Toko buku","tempat"],[437,"花屋","はなや","Toko bunga","tempat"],[438,"部屋","へや","Kamar","tempat"],[439,"産業","さんぎょう","Industri","kehidupan"],
+[440,"生産する","せいさんする","Memproduksi","aktivitas"],[441,"農業","のうぎょう","Pertanian","kehidupan"],[442,"卒業","そつぎょう","Lulus","pendidikan"],[443,"職業","しょくぎょう","Profesi","kehidupan"],[444,"乗る","のる","Naik","transportasi"],[445,"乗客","じょうきゃく","Penumpang","orang"],[446,"降りる","おりる","Turun","transportasi"],
+[447,"降る","ふる","Turun (hujan)","alam"],[448,"運転","うんてん","Menyetir","transportasi"],[449,"出発する","しゅっぱつする","Berangkat","transportasi"],[450,"発売","はつばい","Dijual","kehidupan"],[451,"発明する","はつめいする","Menemukan","aktivitas"],[452,"発音","はつおん","Pelafalan","pendidikan"],[453,"着く","つく","Tiba","transportasi"],
+[454,"着る","きる","Memakai","aktivitas"],[455,"着物","きもの","Kimono","kehidupan"],[456,"到着","とうちゃく","Kedatangan","transportasi"],[457,"春","はる","Musim semi","alam"],[458,"夏","なつ","Musim panas","alam"],[459,"秋風","あきかぜ","Angin gugur","alam"],[460,"冬","ふゆ","Musim dingin","alam"],
+
+[461,"空","そら","Langit","alam"],[462,"空港","くうこう","Bandara","transportasi"],[463,"光る","ひかる","Bersinar","alam"],[464,"日光","にっこう","Sinar matahari","alam"],[465,"台風","たいふう","Topan","alam"],[466,"台所","だいどころ","Dapur","tempat"],[467,"風","かぜ","Angin","alam"],
+[468,"風呂","ふろ","Bak mandi","kehidupan"],[469,"風邪","かぜ","Pilek","kehidupan"],[470,"季節","きせつ","Musim","alam"],[471,"四季","しき","4 musim","alam"],[472,"朝","あさ","Pagi","waktu"],[473,"朝ごはん","あさごはん","Sarapan","kehidupan"],[474,"昼","ひる","Siang","waktu"],
+[475,"夜","よる","Malam","waktu"],[476,"今夜","こんや","Malam ini","waktu"],[477,"方","かた","Cara/Arah","kehidupan"],[478,"夕方","ゆうがた","Sore","waktu"],[479,"方法","ほうほう","Metode","kehidupan"],[480,"晩ご飯","ばんごはん","Makan malam","kehidupan"],[481,"以上","いじょう","Lebih dari","sifat"],
+[482,"以下","いか","Kurang dari","sifat"],[483,"一度","いちど","Sekali","waktu"],[484,"今度","こんど","Lain kali","waktu"],[485,"未来","みらい","Masa depan","waktu"],[486,"頭","あたま","Kepala","tubuh"],[487,"顔","かお","Wajah","tubuh"],[488,"笑顔","えがお","Senyum","kehidupan"],
+[489,"声","こえ","Suara","tubuh"],[490,"内","うち","Dalam","posisi"],[491,"家族","かぞく","Keluarga","orang"],[492,"家事","かじ","Pekerjaan rumah","kehidupan"],[493,"私","わたし","Saya","orang"],[494,"自信","じしん","Percaya diri","sifat"],[495,"兄","あに","Kakak laki-laki","orang"],
+[496,"弟","おとうと","Adik laki-laki","orang"],[497,"妻","つま","Istri","orang"],[498,"理由","りゆう","Alasan","kehidupan"],[499,"野球","やきゅう","Bisbol","aktivitas"],[500,"ご飯","ごはん","Nasi","kehidupan"],[501,"味","あじ","Rasa","kehidupan"],[502,"意味","いみ","Arti","pendidikan"],
+[503,"趣味","しゅみ","Hobi","kehidupan"],[504,"店","みせ","Toko","tempat"],[505,"所","ところ","Tempat","tempat"],[506,"場所","ばしょ","Lokasi","tempat"],[507,"都会","とかい","Kota besar","tempat"],[508,"市","し","Kota","tempat"],[509,"町","まち","Kota kecil","tempat"],
+[510,"村","むら","Desa","tempat"],[511,"番号","ばんごう","Nomor","kehidupan"],[512,"信号","しんごう","Lampu lalu lintas","transportasi"],[513,"工場","こうじょう","Pabrik","tempat"],[514,"病院","びょういん","Rumah sakit","tempat"],[515,"映画館","えいがかん","Bioskop","tempat"],[516,"文字","もじ","Huruf","pendidikan"],
+[517,"教える","おしえる","Mengajar","pendidikan"],[518,"勉強","べんきょう","Belajar","pendidikan"],[519,"英語","えいご","Bahasa Inggris","pendidikan"],[520,"宿題","しゅくだい","PR","pendidikan"],[521,"試合","しあい","Pertandingan","aktivitas"],[522,"答え","こたえ","Jawaban","pendidikan"],[523,"用意","ようい","Persiapan","aktivitas"],
+[524,"意見","いけん","Pendapat","kehidupan"],[525,"紙","かみ","Kertas","kehidupan"],[526,"手紙","てがみ","Surat","kehidupan"],[527,"色","いろ","Warna","sifat"],[528,"同じ","おなじ","Sama","sifat"]
 ];
 
+
+// Kategori tematik
 const CATS=[
-  {label:"1–50",f:1,t:50},{label:"51–100",f:51,t:100},{label:"101–150",f:101,t:150},
-  {label:"151–200",f:151,t:200},{label:"201–250",f:201,t:250},{label:"251–300",f:251,t:300},
-  {label:"301–350",f:301,t:350},{label:"351–400",f:351,t:400},{label:"401–450",f:401,t:450},
-  {label:"451–557",f:451,t:557}
+  {label:"Alam",key:"alam"},{label:"Waktu",key:"waktu"},{label:"Angka",key:"angka"},
+  {label:"Tubuh",key:"tubuh"},{label:"Posisi",key:"posisi"},{label:"Orang",key:"orang"},
+  {label:"Sifat",key:"sifat"},{label:"Aktivitas",key:"aktivitas"},{label:"Kehidupan",key:"kehidupan"},
+  {label:"Tempat",key:"tempat"},{label:"Pendidikan",key:"pendidikan"},{label:"Transportasi",key:"transportasi"}
 ];
 
-let selected=new Set(), mode='k2a', deck=[], idx=0, flipped=false, knowN=0, unknownN=0, unknownCards=[];
+// ═══════════════ STATE ═══════════════
+let selected = new Set();
+let mode = 'k2a';
+let deck = [];
+let idx = 0;
+let flipped = false;
+let knowN = 0;
+let unknownN = 0;
+let unknownCards = [];
+let srsEnabled = true;
 
-function init(){
-  CATS.forEach(c=>{
-    const b=document.createElement('button');
-    b.className='chip'; b.textContent=c.label;
-    b.onclick=()=>toggleCat(c,b);
-    document.getElementById('cat-chips').appendChild(b);
+// ═══════════════ SRS (Spaced Repetition) ═══════════════
+const SRS_KEY = 'kanji_srs_data';
+const SETTINGS_KEY = 'kanji_settings';
+
+function loadSRS() {
+  try {
+    const data = localStorage.getItem(SRS_KEY);
+    return data ? JSON.parse(data) : {};
+  } catch(e) { return {}; }
+}
+
+function saveSRS(data) {
+  try { localStorage.setItem(SRS_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function getSRSScore(id) {
+  const data = loadSRS();
+  if (!data[id]) return { correct: 0, incorrect: 0, lastSeen: 0, interval: 1 };
+  return data[id];
+}
+
+function updateSRS(id, known) {
+  const data = loadSRS();
+  if (!data[id]) data[id] = { correct: 0, incorrect: 0, lastSeen: 0, interval: 1 };
+  data[id].lastSeen = Date.now();
+  if (known) {
+    data[id].correct++;
+    data[id].interval = Math.min(data[id].interval * 2, 30);
+  } else {
+    data[id].incorrect++;
+    data[id].interval = 1;
+  }
+  saveSRS(data);
+}
+
+function getSRSLevel(id) {
+  const s = getSRSScore(id);
+  const total = s.correct + s.incorrect;
+  if (total === 0) return 'Baru';
+  const ratio = s.correct / total;
+  if (ratio >= 0.8 && total >= 3) return 'Mahir';
+  if (ratio >= 0.5) return 'Sedang';
+  return 'Sulit';
+}
+
+function sortBySRS(cards) {
+  if (!srsEnabled) return cards;
+  const data = loadSRS();
+  return [...cards].sort((a, b) => {
+    const sa = data[a[0]] || { correct: 0, incorrect: 0, interval: 1, lastSeen: 0 };
+    const sb = data[b[0]] || { correct: 0, incorrect: 0, interval: 1, lastSeen: 0 };
+    // Prioritas: yang belum pernah dilihat > yang sering salah > yang lama tidak dilihat
+    const scoreA = sa.correct + sa.incorrect === 0 ? -1000 : (sa.incorrect - sa.correct) * 10 - sa.interval;
+    const scoreB = sb.correct + sb.incorrect === 0 ? -1000 : (sb.incorrect - sb.correct) * 10 - sb.interval;
+    return scoreA - scoreB;
   });
+}
+
+// ═══════════════ SETTINGS ═══════════════
+function loadSettings() {
+  try {
+    const s = localStorage.getItem(SETTINGS_KEY);
+    return s ? JSON.parse(s) : { srsEnabled: true };
+  } catch(e) { return { srsEnabled: true }; }
+}
+
+function saveSettings() {
+  try {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify({ srsEnabled }));
+  } catch(e) {}
+}
+
+
+// ═══════════════ TOAST ═══════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ═══════════════ INIT ═══════════════
+function init() {
+  // Load settings
+  const settings = loadSettings();
+  srsEnabled = settings.srsEnabled;
+  updateSRSButton();
+
+  // Update header total
+  document.getElementById('header-total').textContent = RAW.length;
+
+  // Build category chips
+  const chipsEl = document.getElementById('cat-chips');
+  CATS.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'chip';
+    b.textContent = c.label;
+    b.setAttribute('role', 'checkbox');
+    b.setAttribute('aria-checked', 'false');
+    b.onclick = () => toggleCat(c, b);
+    chipsEl.appendChild(b);
+  });
+
+  // Set default range
+  document.getElementById('range-to').max = RAW.length;
+  document.getElementById('range-from').max = RAW.length;
   applyRange();
+
+  // Search
   document.getElementById('search-input').addEventListener('input', doSearch);
+
+  // Keyboard
   document.addEventListener('keydown', onKey);
+
+  // Swipe
+  initSwipe();
 }
 
-function applyRange(){
-  const f=parseInt(document.getElementById('range-from').value)||1;
-  const t=parseInt(document.getElementById('range-to').value)||100;
+// ═══════════════ RANGE VALIDATION ═══════════════
+function applyRange() {
+  const fromEl = document.getElementById('range-from');
+  const toEl = document.getElementById('range-to');
+  const errEl = document.getElementById('range-error');
+  let f = parseInt(fromEl.value) || 1;
+  let t = parseInt(toEl.value) || RAW.length;
+
+  // Validasi
+  errEl.classList.remove('visible');
+  errEl.textContent = '';
+
+  if (f < 1) { f = 1; fromEl.value = 1; }
+  if (t > RAW.length) { t = RAW.length; toEl.value = RAW.length; }
+  if (f > t) {
+    errEl.textContent = 'Nomor awal tidak boleh lebih besar dari nomor akhir!';
+    errEl.classList.add('visible');
+    return;
+  }
+  if (f > RAW.length || t < 1) {
+    errEl.textContent = 'Nomor harus antara 1 dan ' + RAW.length + '!';
+    errEl.classList.add('visible');
+    return;
+  }
+
   selected.clear();
-  RAW.forEach(r=>{ if(r[0]>=f&&r[0]<=t) selected.add(r[0]); });
-  updateCatChips(); updateCount();
+  RAW.forEach(r => { if (r[0] >= f && r[0] <= t) selected.add(r[0]); });
+  updateCatChips();
+  updateCount();
 }
 
-function toggleCat(c,el){
-  const all=RAW.filter(r=>r[0]>=c.f&&r[0]<=c.t).every(r=>selected.has(r[0]));
-  RAW.forEach(r=>{ if(r[0]>=c.f&&r[0]<=c.t){ all?selected.delete(r[0]):selected.add(r[0]); }});
-  updateCatChips(); updateCount();
+// ═══════════════ CATEGORY CHIPS ═══════════════
+function toggleCat(c, el) {
+  const catCards = RAW.filter(r => r[4] === c.key);
+  const allSelected = catCards.every(r => selected.has(r[0]));
+  catCards.forEach(r => {
+    if (allSelected) selected.delete(r[0]);
+    else selected.add(r[0]);
+  });
+  updateCatChips();
+  updateCount();
 }
 
-function updateCatChips(){
-  const chips=document.querySelectorAll('#cat-chips .chip');
-  CATS.forEach((c,i)=>{
-    const all=RAW.filter(r=>r[0]>=c.f&&r[0]<=c.t).every(r=>selected.has(r[0]));
-    chips[i].classList.toggle('on',all);
+function updateCatChips() {
+  const chips = document.querySelectorAll('#cat-chips .chip');
+  CATS.forEach((c, i) => {
+    const catCards = RAW.filter(r => r[4] === c.key);
+    const allOn = catCards.length > 0 && catCards.every(r => selected.has(r[0]));
+    chips[i].classList.toggle('on', allOn);
+    chips[i].setAttribute('aria-checked', allOn ? 'true' : 'false');
   });
 }
 
-function selectAll(){ RAW.forEach(r=>selected.add(r[0])); updateCatChips(); updateCount(); }
-function clearAll(){ selected.clear(); updateCatChips(); updateCount(); }
-function updateCount(){
-  document.getElementById('sel-count').innerHTML='Dipilih: <strong>'+selected.size+'</strong> kanji';
+function selectAll() { RAW.forEach(r => selected.add(r[0])); updateCatChips(); updateCount(); }
+function clearAll() { selected.clear(); updateCatChips(); updateCount(); }
+function updateCount() {
+  const el = document.getElementById('sel-count');
+  el.innerHTML = 'Dipilih: <strong>' + selected.size + '</strong> kanji';
 }
 
-function setMode(m){
-  mode=m;
-  ['k2a','a2k','mix'].forEach(x=>document.getElementById('mode-'+x).classList.toggle('on',x===m));
+
+// ═══════════════ MODE ═══════════════
+function setMode(m) {
+  mode = m;
+  ['k2a','a2k','mix'].forEach(x => {
+    const btn = document.getElementById('mode-' + x);
+    btn.classList.toggle('on', x === m);
+    btn.setAttribute('aria-checked', x === m ? 'true' : 'false');
+  });
 }
 
-function doSearch(){
-  const q=document.getElementById('search-input').value.toLowerCase().trim();
-  const res=document.getElementById('search-results');
-  res.innerHTML='';
-  if(!q){return;}
-  const hits=RAW.filter(r=>r[1].includes(q)||r[2].includes(q)||r[3].toLowerCase().includes(q)).slice(0,30);
-  hits.forEach(r=>{
-    const d=document.createElement('div');
-    d.className='search-item'+(selected.has(r[0])?' selected-item':'');
-    d.innerHTML=`<span class="si-num">${r[0]}</span><span class="si-kanji">${r[1]}</span><span class="si-kana">${r[2]}</span><span class="si-meaning">${r[3]}</span><span class="si-check">${selected.has(r[0])?'✓':''}</span>`;
-    d.onclick=()=>toggleOne(r[0],d);
+// ═══════════════ SEARCH (SAFE - no innerHTML with user data) ═══════════════
+function doSearch() {
+  const q = document.getElementById('search-input').value.toLowerCase().trim();
+  const res = document.getElementById('search-results');
+  res.innerHTML = '';
+  if (!q) return;
+  const hits = RAW.filter(r =>
+    r[1].includes(q) || r[2].includes(q) || r[3].toLowerCase().includes(q)
+  ).slice(0, 30);
+
+  hits.forEach(r => {
+    const d = document.createElement('div');
+    d.className = 'search-item' + (selected.has(r[0]) ? ' selected-item' : '');
+    d.setAttribute('role', 'option');
+    d.setAttribute('tabindex', '0');
+    d.setAttribute('aria-selected', selected.has(r[0]) ? 'true' : 'false');
+
+    const numSpan = document.createElement('span');
+    numSpan.className = 'si-num';
+    numSpan.textContent = r[0];
+
+    const kanjiSpan = document.createElement('span');
+    kanjiSpan.className = 'si-kanji';
+    kanjiSpan.textContent = r[1];
+
+    const kanaSpan = document.createElement('span');
+    kanaSpan.className = 'si-kana';
+    kanaSpan.textContent = r[2];
+
+    const meaningSpan = document.createElement('span');
+    meaningSpan.className = 'si-meaning';
+    meaningSpan.textContent = r[3];
+
+    const checkSpan = document.createElement('span');
+    checkSpan.className = 'si-check';
+    checkSpan.textContent = selected.has(r[0]) ? '\u2713' : '';
+
+    d.appendChild(numSpan);
+    d.appendChild(kanjiSpan);
+    d.appendChild(kanaSpan);
+    d.appendChild(meaningSpan);
+    d.appendChild(checkSpan);
+
+    d.onclick = () => toggleOne(r[0], d);
+    d.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleOne(r[0], d); }};
     res.appendChild(d);
   });
 }
 
-function toggleOne(id,el){
-  if(selected.has(id)){selected.delete(id);el.classList.remove('selected-item');el.querySelector('.si-check').textContent='';}
-  else{selected.add(id);el.classList.add('selected-item');el.querySelector('.si-check').textContent='✓';}
-  updateCatChips(); updateCount();
-}
-
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('screen-'+id).classList.add('active');
-}
-
-function startQuiz(){
-  if(!selected.size){alert('Pilih minimal 1 kanji!');return;}
-  deck=shuffle(RAW.filter(r=>selected.has(r[0])));
-  idx=0;knowN=0;unknownN=0;unknownCards=[];
-  showScreen('quiz'); renderCard();
-}
-
-function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-
-function shuffleAndRestart(){deck=shuffle([...deck]);idx=0;knowN=0;unknownN=0;unknownCards=[];renderCard();}
-
-let cardMode='k2a';
-function renderCard(){
-  flipped=false;
-  const r=deck[idx];
-  cardMode=mode==='mix'?(idx%2===0?'k2a':'a2k'):mode;
-  document.getElementById('card-badge').textContent=cardMode==='k2a'?'Kanji → Arti':'Arti → Kanji';
-  document.getElementById('card-no').textContent='#'+r[0];
-  const main=document.getElementById('card-main');
-  const sub=document.getElementById('card-sub');
-  if(cardMode==='k2a'){
-    main.textContent=r[1]; main.className='card-main';
-    sub.textContent='';
+function toggleOne(id, el) {
+  if (selected.has(id)) {
+    selected.delete(id);
+    el.classList.remove('selected-item');
+    el.setAttribute('aria-selected', 'false');
+    el.querySelector('.si-check').textContent = '';
   } else {
-    main.textContent=r[3]; main.className='card-main latin';
-    sub.textContent=r[2];
+    selected.add(id);
+    el.classList.add('selected-item');
+    el.setAttribute('aria-selected', 'true');
+    el.querySelector('.si-check').textContent = '\u2713';
   }
-  document.getElementById('card-answer').className='card-answer';
-  document.getElementById('flip-hint').style.display='block';
+  updateCatChips();
+  updateCount();
+}
+
+// ═══════════════ SCREENS ═══════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+}
+
+
+// ═══════════════ QUIZ ═══════════════
+function startQuiz() {
+  if (!selected.size) { showToast('Pilih minimal 1 kanji!'); return; }
+  let cards = RAW.filter(r => selected.has(r[0]));
+  if (srsEnabled) {
+    cards = sortBySRS(cards);
+  } else {
+    cards = shuffle(cards);
+  }
+  deck = cards;
+  idx = 0; knowN = 0; unknownN = 0; unknownCards = [];
+  showScreen('quiz');
+  renderCard();
+}
+
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function shuffleAndRestart() {
+  deck = shuffle([...deck]);
+  idx = 0; knowN = 0; unknownN = 0; unknownCards = [];
+  renderCard();
+}
+
+let cardMode = 'k2a';
+function renderCard() {
+  flipped = false;
+  const r = deck[idx];
+  cardMode = mode === 'mix' ? (Math.random() > 0.5 ? 'k2a' : 'a2k') : mode;
+
+  document.getElementById('card-badge').textContent = cardMode === 'k2a' ? 'Kanji \u2192 Arti' : 'Arti \u2192 Kanji';
+  document.getElementById('card-no').textContent = '#' + r[0];
+
+  const main = document.getElementById('card-main');
+  const sub = document.getElementById('card-sub');
+  if (cardMode === 'k2a') {
+    main.textContent = r[1];
+    main.className = 'card-main';
+    sub.textContent = '';
+  } else {
+    main.textContent = r[3];
+    main.className = 'card-main latin';
+    sub.textContent = '';
+  }
+
+  // SRS badge
+  const badge = document.getElementById('srs-badge');
+  if (srsEnabled) {
+    badge.textContent = getSRSLevel(r[0]);
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+
+  document.getElementById('card-answer').className = 'card-answer';
+  document.getElementById('flip-hint').style.display = 'block';
   document.getElementById('rating-row').classList.remove('visible');
+  document.getElementById('swipe-hint').style.opacity = flipped ? '0' : '1';
   updateProgress();
 }
 
-function flipCard(){
-  if(flipped) return;
-  flipped=true;
-  const r=deck[idx];
-  const ans=document.getElementById('answer-content');
-  if(cardMode==='k2a'){
-    ans.innerHTML=`<div class="answer-main">${r[3]}</div><div class="answer-kana">${r[2]}</div>`;
+function flipCard() {
+  if (flipped) return;
+  flipped = true;
+  const r = deck[idx];
+  const ans = document.getElementById('answer-content');
+  ans.innerHTML = '';
+
+  if (cardMode === 'k2a') {
+    const mainDiv = document.createElement('div');
+    mainDiv.className = 'answer-main';
+    mainDiv.textContent = r[3];
+    const kanaDiv = document.createElement('div');
+    kanaDiv.className = 'answer-kana';
+    kanaDiv.textContent = r[2];
+    ans.appendChild(mainDiv);
+    ans.appendChild(kanaDiv);
   } else {
-    ans.innerHTML=`<div class="answer-kanji">${r[1]}</div><div class="answer-kana">${r[2]}</div>`;
+    const kanjiDiv = document.createElement('div');
+    kanjiDiv.className = 'answer-kanji';
+    kanjiDiv.textContent = r[1];
+    const kanaDiv = document.createElement('div');
+    kanaDiv.className = 'answer-kana';
+    kanaDiv.textContent = r[2];
+    ans.appendChild(kanjiDiv);
+    ans.appendChild(kanaDiv);
   }
-  document.getElementById('card-answer').className='card-answer visible';
-  document.getElementById('flip-hint').style.display='none';
+
+  document.getElementById('card-answer').className = 'card-answer visible';
+  document.getElementById('flip-hint').style.display = 'none';
   document.getElementById('rating-row').classList.add('visible');
+  document.getElementById('swipe-hint').style.opacity = '1';
 }
 
-function rate(know){
-  if(know){knowN++;}else{unknownN++;unknownCards.push(deck[idx]);}
-  document.getElementById('stat-know').textContent=knowN;
-  document.getElementById('stat-unknown').textContent=unknownN;
+function rate(know) {
+  const r = deck[idx];
+  if (know) { knowN++; } else { unknownN++; unknownCards.push(r); }
+  // Update SRS
+  updateSRS(r[0], know);
+  document.getElementById('stat-know').textContent = knowN;
+  document.getElementById('stat-unknown').textContent = unknownN;
   idx++;
-  if(idx>=deck.length){ showResult(); } else { renderCard(); }
+  if (idx >= deck.length) { showResult(); } else { renderCard(); }
 }
 
-function updateProgress(){
-  const pct=Math.round(idx/deck.length*100);
-  document.getElementById('progress-fill').style.width=pct+'%';
-  document.getElementById('quiz-counter').innerHTML='<strong>'+(idx+1)+'</strong> / '+deck.length;
-  document.getElementById('stat-left').textContent=deck.length-idx;
+function updateProgress() {
+  const pct = Math.round(idx / deck.length * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-track').setAttribute('aria-valuenow', pct);
+  document.getElementById('quiz-counter').innerHTML = '<strong>' + (idx + 1) + '</strong> / ' + deck.length;
+  document.getElementById('stat-left').textContent = deck.length - idx;
 }
 
-function showResult(){
-  document.getElementById('res-know').textContent=knowN;
-  document.getElementById('res-unknown').textContent=unknownN;
-  const pct=Math.round(knowN/deck.length*100);
-  document.getElementById('result-sub').textContent='Kamu tahu '+knowN+' dari '+deck.length+' kanji ('+pct+'%)';
+
+// ═══════════════ RESULT ═══════════════
+function showResult() {
+  document.getElementById('res-know').textContent = knowN;
+  document.getElementById('res-unknown').textContent = unknownN;
+  const pct = deck.length > 0 ? Math.round(knowN / deck.length * 100) : 0;
+  document.getElementById('result-sub').textContent = 'Kamu tahu ' + knowN + ' dari ' + deck.length + ' kanji (' + pct + '%)';
   showScreen('result');
 }
 
-function retryUnknown(){
-  if(!unknownCards.length){alert('Semua sudah tahu!');return;}
-  deck=shuffle([...unknownCards]);idx=0;knowN=0;unknownN=0;unknownCards=[];
-  showScreen('quiz');renderCard();
-}
-function retryAll(){deck=shuffle([...deck]);idx=0;knowN=0;unknownN=0;unknownCards=[];showScreen('quiz');renderCard();}
-function backToSelect(){showScreen('select');}
-
-function onKey(e){
-  const q=document.getElementById('screen-quiz');
-  if(!q.classList.contains('active')) return;
-  if(e.target.tagName==='INPUT') return;
-  if(e.code==='Space'){e.preventDefault();flipCard();}
-  else if(e.key==='1'&&flipped){rate(false);}
-  else if(e.key==='2'&&flipped){rate(true);}
+function retryUnknown() {
+  if (!unknownCards.length) { showToast('Semua sudah tahu!'); return; }
+  deck = srsEnabled ? sortBySRS([...unknownCards]) : shuffle([...unknownCards]);
+  idx = 0; knowN = 0; unknownN = 0; unknownCards = [];
+  showScreen('quiz'); renderCard();
 }
 
+function retryAll() {
+  deck = srsEnabled ? sortBySRS([...deck]) : shuffle([...deck]);
+  idx = 0; knowN = 0; unknownN = 0; unknownCards = [];
+  showScreen('quiz'); renderCard();
+}
+
+function backToSelect() { showScreen('select'); }
+
+// ═══════════════ KEYBOARD ═══════════════
+function onKey(e) {
+  const q = document.getElementById('screen-quiz');
+  if (!q.classList.contains('active')) return;
+  if (e.target.tagName === 'INPUT') return;
+  if (e.code === 'Space') { e.preventDefault(); flipCard(); }
+  else if (e.key === '1' && flipped) { rate(false); }
+  else if (e.key === '2' && flipped) { rate(true); }
+}
+
+// ═══════════════ SWIPE GESTURES ═══════════════
+function initSwipe() {
+  const wrap = document.getElementById('card-wrap');
+  let startX = 0, startY = 0, isDragging = false;
+  const THRESHOLD = 80;
+
+  wrap.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    isDragging = true;
+  }, { passive: true });
+
+  wrap.addEventListener('touchmove', (e) => {
+    if (!isDragging || !flipped) return;
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    if (Math.abs(dx) > Math.abs(dy)) {
+      const card = document.getElementById('flashcard');
+      card.style.transform = 'translateX(' + (dx * 0.4) + 'px) rotate(' + (dx * 0.02) + 'deg)';
+      card.style.opacity = Math.max(0.5, 1 - Math.abs(dx) / 400);
+    }
+  }, { passive: true });
+
+  wrap.addEventListener('touchend', (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    const endX = e.changedTouches[0].clientX;
+    const dx = endX - startX;
+    const card = document.getElementById('flashcard');
+    card.style.transform = '';
+    card.style.opacity = '';
+
+    if (!flipped) {
+      // Tap (small movement) = flip
+      if (Math.abs(dx) < 20) flipCard();
+      return;
+    }
+
+    if (dx > THRESHOLD) {
+      rate(true); // swipe right = tahu
+    } else if (dx < -THRESHOLD) {
+      rate(false); // swipe left = belum tahu
+    }
+  }, { passive: true });
+}
+
+// ═══════════════ SRS TOGGLE ═══════════════
+function toggleSRS() {
+  srsEnabled = !srsEnabled;
+  saveSettings();
+  updateSRSButton();
+  showToast(srsEnabled ? 'SRS diaktifkan' : 'SRS dinonaktifkan');
+}
+
+function updateSRSButton() {
+  document.getElementById('srs-toggle-btn').textContent = 'SRS: ' + (srsEnabled ? 'Aktif' : 'Nonaktif');
+}
+
+
+// ═══════════════ EXPORT / IMPORT ═══════════════
+function exportProgress() {
+  const data = {
+    version: 1,
+    exportDate: new Date().toISOString(),
+    srs: loadSRS(),
+    settings: { srsEnabled }
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'kanji-progress-' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Progress berhasil di-export!');
+}
+
+function importProgress(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.srs) {
+        saveSRS(data.srs);
+      }
+      if (data.settings) {
+        srsEnabled = data.settings.srsEnabled !== undefined ? data.settings.srsEnabled : true;
+        saveSettings();
+        updateSRSButton();
+      }
+      showToast('Progress berhasil di-import!');
+    } catch (err) {
+      showToast('File tidak valid!');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function resetProgress() {
+  if (confirm('Hapus semua data progress? Ini tidak bisa dibatalkan.')) {
+    localStorage.removeItem(SRS_KEY);
+    showToast('Progress direset!');
+  }
+}
+
+// ═══════════════ START ═══════════════
 init();
 </script>
 </body>
