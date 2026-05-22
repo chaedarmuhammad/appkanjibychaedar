@@ -627,7 +627,7 @@
     "kanji": "国会",
     "kana": "こっかい",
     "arti": "Parlemen",
-    "kategori": "pekerjaan"
+    "kategori": "tempat"
   },
   {
     "id": 91,
@@ -1159,7 +1159,7 @@
     "kanji": "好み",
     "kana": "このみ",
     "arti": "Kesukaan",
-    "kategori": "kata sifat"
+    "kategori": "benda"
   },
   {
     "id": 167,
@@ -1866,7 +1866,7 @@
     "kanji": "思い出",
     "kana": "おもいで",
     "arti": "Kenangan",
-    "kategori": "ekspresi"
+    "kategori": "benda"
   },
   {
     "id": 268,
@@ -1908,7 +1908,7 @@
     "kanji": "運転",
     "kana": "うんてん",
     "arti": "Menyetir",
-    "kategori": "kata kerja"
+    "kategori": "transportasi"
   },
   {
     "id": 274,
@@ -2622,7 +2622,7 @@
     "kanji": "空腹",
     "kana": "くうふく",
     "arti": "Lapar",
-    "kategori": "kata sifat"
+    "kategori": "kesehatan"
   },
   {
     "id": 376,
@@ -2636,7 +2636,7 @@
     "kanji": "光る",
     "kana": "ひかる",
     "arti": "Bersinar",
-    "kategori": "alam"
+    "kategori": "kata kerja"
   },
   {
     "id": 378,
@@ -2762,7 +2762,7 @@
     "kanji": "声",
     "kana": "こえ",
     "arti": "Suara",
-    "kategori": "tubuh"
+    "kategori": "komunikasi"
   },
   {
     "id": 396,
@@ -2818,7 +2818,7 @@
     "kanji": "味",
     "kana": "あじ",
     "arti": "Rasa",
-    "kategori": "benda"
+    "kategori": "makanan & minuman"
   },
   {
     "id": 404,
@@ -2923,7 +2923,7 @@
     "kanji": "不安な",
     "kana": "ふあんな",
     "arti": "Cemas",
-    "kategori": "ekspresi"
+    "kategori": "kata sifat"
   },
   {
     "id": 419,
@@ -2958,7 +2958,7 @@
     "kanji": "世代",
     "kana": "せだい",
     "arti": "Generasi",
-    "kategori": "orang"
+    "kategori": "waktu"
   },
   {
     "id": 424,
@@ -3126,7 +3126,7 @@
     "kanji": "利",
     "kana": "り",
     "arti": "Keuntungan",
-    "kategori": "kata sifat"
+    "kategori": "ekonomi"
   },
   {
     "id": 448,
@@ -3630,7 +3630,7 @@
     "kanji": "最後",
     "kana": "さいご",
     "arti": "Terakhir",
-    "kategori": "posisi"
+    "kategori": "waktu"
   },
   {
     "id": 520,
@@ -3644,7 +3644,7 @@
     "kanji": "有",
     "kana": "ゆう",
     "arti": "Ada/Memiliki",
-    "kategori": "kata sifat"
+    "kategori": "kata kerja"
   },
   {
     "id": 522,
@@ -3686,7 +3686,7 @@
     "kanji": "様子",
     "kana": "ようす",
     "arti": "Keadaan",
-    "kategori": "kata sifat"
+    "kategori": "benda"
   },
   {
     "id": 528,
@@ -4162,7 +4162,7 @@
     "kanji": "調子",
     "kana": "ちょうし",
     "arti": "Kondisi",
-    "kategori": "kata sifat"
+    "kategori": "benda"
   },
   {
     "id": 596,
