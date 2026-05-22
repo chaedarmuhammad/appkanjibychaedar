@@ -1,10 +1,10 @@
 /**
  * data.js — Kanji Data Loader
- * Memuat data kanji dari file JSON dan mengkonversi ke format array.
+ * Memuat data kanji dan mengkonversi ke format array.
  * Format internal: [id, kanji, kana, arti, kategori]
  *
- * Data disimpan di data/kanji.json dalam format objek untuk kemudahan edit.
- * Di sini dikonversi ke format array untuk kompatibilitas dengan logic yang ada.
+ * Data dimuat dari KANJI_RAW_DATA (embedded script) sebagai primary source.
+ * Fallback ke fetch data/kanji.json jika embedded tidak tersedia.
  */
 
 let KANJI_DATA = [];
@@ -12,31 +12,37 @@ let KANJI_DATA = [];
 /**
  * CORE_KANJI_MAP — Peta kanji inti beserta turunannya.
  * Key: karakter kanji inti (1 karakter)
- * Value: { core: [id, kanji, kana, arti, kategori], derivatives: [...ids] }
- *
- * Turunan ditentukan berdasarkan "character containment":
- * semua entri yang mengandung karakter kanji inti di dalamnya.
+ * Value: { core: [id, kanji, kana, arti, kategori], derivativeIds: [...ids] }
  */
 let CORE_KANJI_MAP = {};
 
 /**
- * Load data kanji dari JSON file.
- * Dipanggil sebelum init() untuk memastikan data tersedia.
+ * Load data kanji.
+ * Priority: embedded KANJI_RAW_DATA > fetch dari JSON file.
  */
 async function loadKanjiData() {
   let jsonData = null;
 
-  // Method 1: Fetch API (works with web server)
-  try {
-    const response = await fetch('data/kanji.json');
-    if (response.ok) {
-      jsonData = await response.json();
-    }
-  } catch (error) {
-    console.warn('[Data] Fetch gagal:', error.message);
+  // Method 1: Embedded data (paling reliable, tidak perlu fetch)
+  if (typeof KANJI_RAW_DATA !== 'undefined' && Array.isArray(KANJI_RAW_DATA) && KANJI_RAW_DATA.length > 0) {
+    jsonData = KANJI_RAW_DATA;
+    console.log('[Data] Menggunakan embedded data.');
   }
 
-  // Method 2: XMLHttpRequest fallback (works with file:// protocol)
+  // Method 2: Fetch API fallback
+  if (!jsonData) {
+    try {
+      const response = await fetch('data/kanji.json');
+      if (response.ok) {
+        jsonData = await response.json();
+        console.log('[Data] Menggunakan fetch data.');
+      }
+    } catch (error) {
+      console.warn('[Data] Fetch gagal:', error.message);
+    }
+  }
+
+  // Method 3: XMLHttpRequest fallback (file:// protocol)
   if (!jsonData) {
     try {
       jsonData = await new Promise((resolve, reject) => {
@@ -44,7 +50,7 @@ async function loadKanjiData() {
         xhr.open('GET', 'data/kanji.json', true);
         xhr.responseType = 'json';
         xhr.onload = function () {
-          if (xhr.status === 200 || xhr.status === 0) { // status 0 = file://
+          if (xhr.status === 200 || xhr.status === 0) {
             resolve(xhr.response);
           } else {
             reject(new Error('XHR status: ' + xhr.status));
@@ -60,7 +66,6 @@ async function loadKanjiData() {
 
   if (!jsonData || !Array.isArray(jsonData) || jsonData.length === 0) {
     console.error('[Data] Gagal memuat data kanji!');
-    // Set data kosong agar app tidak crash
     KANJI_DATA = [];
     CORE_KANJI_MAP = {};
     return;
@@ -90,14 +95,12 @@ async function loadKanjiData() {
 function buildCoreKanjiMap() {
   CORE_KANJI_MAP = {};
 
-  // Identifikasi semua kanji inti (1 karakter)
   const coreEntries = KANJI_DATA.filter(card => card[1].length === 1);
 
   coreEntries.forEach(core => {
-    const char = core[1]; // karakter kanji
+    const char = core[1];
     const derivativeIds = [];
 
-    // Cari semua entri yang mengandung karakter ini (selain dirinya sendiri)
     KANJI_DATA.forEach(card => {
       if (card[0] !== core[0] && card[1].includes(char)) {
         derivativeIds.push(card[0]);
@@ -121,8 +124,8 @@ function getIdsByCoreKanji(coreChars) {
   coreChars.forEach(char => {
     const group = CORE_KANJI_MAP[char];
     if (group) {
-      ids.add(group.core[0]); // ID kanji inti
-      group.derivativeIds.forEach(id => ids.add(id)); // ID turunan
+      ids.add(group.core[0]);
+      group.derivativeIds.forEach(id => ids.add(id));
     }
   });
   return ids;
