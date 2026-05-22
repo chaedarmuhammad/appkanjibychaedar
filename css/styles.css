@@ -321,6 +321,71 @@ header {
   flex-wrap: wrap;
 }
 
+/* -- Core Kanji Grid -- */
+.section-desc {
+  font-size: 12px;
+  color: var(--text2);
+  margin-bottom: 14px;
+  font-weight: 300;
+}
+
+.core-kanji-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+  gap: 6px;
+}
+
+.core-kanji-btn {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 20px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
+  padding: 0;
+}
+
+.core-kanji-btn:hover {
+  border-color: var(--border2);
+  color: var(--text);
+  background: rgba(255,255,255,0.04);
+}
+
+.core-kanji-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.core-kanji-btn.on {
+  background: rgba(232,201,122,0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.core-info {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+  min-height: 0;
+}
+
+.core-info strong {
+  color: var(--accent);
+}
+
+.core-detail {
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.02em;
+}
+
 /* ── 6. Screen: Quiz ── */
 #screen-quiz {
   max-width: 640px;

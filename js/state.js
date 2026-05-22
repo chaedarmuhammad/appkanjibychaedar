@@ -6,6 +6,7 @@
 const state = {
   selectedIds: new Set(),      // ID kanji yang dipilih
   activeCategories: new Set(), // Kategori yang aktif dipilih oleh user
+  activeCoreKanji: new Set(),  // Kanji inti yang aktif dipilih oleh user
   mode: 'k2a',                // Mode kuis: k2a | a2k | mix
   deck: [],                   // Deck kartu aktif
   currentIndex: 0,            // Index kartu saat ini

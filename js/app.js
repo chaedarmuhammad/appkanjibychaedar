@@ -145,6 +145,9 @@ function init() {
     chipsContainer.appendChild(chipBtn);
   });
 
+  // Build core kanji grid
+  buildCoreKanjiGrid();
+
   // Set max range input berdasarkan data
   document.getElementById('range-from').max = KANJI_DATA.length;
   document.getElementById('range-to').max = KANJI_DATA.length;
